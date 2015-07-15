@@ -32,14 +32,16 @@ LAST_TIME        = dt.now()
 TOTAL_DOCUMENTS  = 0
 
 
-
-def create_file_if_not_exists(path):
+def create_file_if_not_exists(path, content):
+    """
+    Creates a file with a pre-defined content if not exists yet.
+    """
     try:
         with open(path, 'r') as f:
             pass
     except Exception:
         with open(path, 'w') as f:
-            pass
+            f.write(content)
 
 
 def print_collection_size(name):
