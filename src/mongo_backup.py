@@ -18,8 +18,14 @@ from bson.objectid import ObjectId
 from backup_logger import LOGGER
 
 
-DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
-DEFAULT_PROGRESS_FILE    = 'current_progress.yaml'
+DEFAULT_CONFIG_FILE_NAME = os.path.join(
+    os.path.dirname(__file__),
+    'config.yaml'
+)
+DEFAULT_PROGRESS_FILE    = os.path.join(
+    os.path.dirname(__file__),
+    'current_progress.yaml'
+)
 
 DEFAULT_CONFIG = {'collections': {},
                   'source_db': 'mongodb://localhost/test_db',
