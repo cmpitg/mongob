@@ -63,7 +63,10 @@ def read_config(path=None):
             os.path.dirname(__file__),
             DEFAULT_CONFIG_FILE_NAME
         )
-    create_file_if_not_exists(path, content=DEFAULT_CONFIG)
+    create_file_if_not_exists(
+        path=path,
+        content=yaml.dump(DEFAULT_CONFIG)
+    )
 
     res = {}
 
@@ -84,7 +87,7 @@ def read_config(path=None):
 
 def check_stop_flag(config):
     """
-    Checks if the stop flag presents in config and stop the application 
+    Checks if the stop flag presents in config and stop the application
     gracefully if it is.
     """
     if not config.get('stop', False):
