@@ -18,6 +18,8 @@ from backup_logger import LOGGER
 
 
 DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
+DEFAULT_PROGRESS_FILE    = 'current_progress.yaml'
+
 DEFAULT_CONFIG = {'collections': {},
                   'source_db': 'mongodb://localhost/test_db',
                   'destination_db': 'mongodb://localhost/dest_db',
