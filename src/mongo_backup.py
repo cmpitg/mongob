@@ -80,6 +80,20 @@ def read_config(path=None):
     return res
 
 
+def check_stop_flag(config):
+    """
+    Checks if the stop flag presents in config and stop the application 
+    gracefully if it is.
+    """
+    if not config['stop']:
+        return
+
+    for conn in CONNS:
+        conn.close()
+
+    print("Stopped by user.")
+
+    sys.exit(0)
 
 
 def report_collections_size():
