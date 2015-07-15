@@ -154,9 +154,23 @@ def build_query(path):
         return {}
 
 
+def find_docs_to_update(coll, condition=None):
+    """
+    Builds and queries list of docs to update in `coll'.  If `condition' is
+    None or not supplied, find all documents.  TODO: documentation about
+    grammar that `condition' supports.
+    """
+    if not condition or condition == []:
+        return coll.find()
+
+
+# adb = MongoClient('mongodb://localhost/)
+# find_docs_to_update(adb.log_traffic).count()
+
+
 def backup_collection(coll_src,
                       coll_dest,
-                      condition,
+                      condition=None,
                       config_path=None,
                       logger=None):
     """
