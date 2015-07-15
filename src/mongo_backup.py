@@ -63,10 +63,7 @@ def read_config(path=None):
     the file is located at DEFAULT_CONFIG_FILE_NAME.  If the config file
     doesn't exist, it is created with content DEFAULT_CONFIG.
     """
-    path = path or os.path.join(
-        os.path.dirname(__file__),
-        DEFAULT_CONFIG_FILE_NAME
-    )
+    path = path or DEFAULT_CONFIG_FILE_NAME
     create_file_if_not_exists(
         path=path,
         content=yaml.dump(DEFAULT_CONFIG)
@@ -163,7 +160,11 @@ def build_query(path):
         return {}
 
 
-def find_docs_to_update(coll, condition=None):
+def find_docs_to_update(coll,
+                        condition=None,
+                        progress_path=None,
+                        logger=None
+):
     """
     Builds and queries list of docs to update in `coll'.  If `condition' is
     None or not supplied, find all documents.  TODO: documentation about
@@ -172,9 +173,41 @@ def find_docs_to_update(coll, condition=None):
     if not condition or condition == [] or condition == {}:
         return coll.find()
 
+    logger        = logger or LOGGER
+    progress_path = progress_path or DEFAULT_PROGRESS_FILE
+    method        = condition['method']
+    name          = coll.name
+
+    create_file_if_not_exists(progress_path, yaml.dump({}))
+
+    if method == 'object_id':
+        # Find all documents having IDs greater than the saved Object ID
+        with open(progress_path, 'r') as input:
+            start_id = yaml.load(input).get(name, '')
+
+        if start_id == '':
+            return coll.find()
+        else:
+            logger.info('starting from ObjectId: %s', start_id)
+            return coll.find({ "_id": { "$gt": ObjectId(start_id) }})
+
+    elif method == 'date_delta':
+        # Find all documents having 'date' field ≥ now() - delta
+        delta = timedelta(**{ condition['unit']: condition['value']})
+        start_date = (dt.now().date() - delta).strftime('%Y-%m-%d')
+
+        logger.info('starting from date: %s', start_date)
+        return coll.find({ 'date': { "$gte": start_date } })
+        
 
 # adb = MongoClient('mongodb://localhost/)
 # find_docs_to_update(adb.log_traffic).count()
+# log_last_doc('log_traffic', '555317f7d290053143db66b2')
+# find_docs_to_update(adb.log_traffic, { 'method': 'object_id' }).count()
+# => 58
+# log_last_doc('log_traffic', '555317f7d290053143db668a')
+# find_docs_to_update(adb.log_traffic, { 'method': 'object_id' }).count()
+# => 98
 
 
 def log_last_doc(coll_name, doc_id, logger=None, path=None):
