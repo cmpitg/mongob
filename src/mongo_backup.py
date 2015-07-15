@@ -10,19 +10,7 @@ from datetime import datetime as dt
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-
-log_formatter              = logging.Formatter('%(asctime)s : %(message)s')
-log_progress_file_handler  = logging.FileHandler(
-    'mongo_backup_progress.log',
-    mode='a+'
-)
-log_progress_file_handler.setFormatter(log_formatter)
-log_stream_handler = logging.StreamHandler()
-log_stream_handler.setFormatter(log_formatter)
-LOGGER = logging.getLogger('progress')
-LOGGER.setLevel(logging.INFO)
-LOGGER.addHandler(log_progress_file_handler)
-LOGGER.addHandler(log_stream_handler)
+from backup_logger import LOGGER
 
 
 DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
