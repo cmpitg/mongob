@@ -121,14 +121,21 @@ def milisecs_passed(last_time=None):
     return delta
 
 
-def sleep_if_necessary():
+def balance_rate(unit=None, last_time=None):
+    """
+    Sleeps if necessary to keep up with current backup rates and updates
+    current execution time to LAST_TIME.
+    """
     global LAST_TIME
+    last_time = last_time or LAST_TIME
+    unit      = unit or 1000
 
     delta = milisecs_passed()
-    if delta < 1000:
-        time.sleep((1000 - delta) / 1000)
+    if delta < unit:
+        time.sleep((unit - delta) / 1000)
         LAST_TIME = dt.now()
 
+# LAST_TIME = dt.now(); balance_rate(); milisecs_passed()
 
 def build_query(path):
     if os.path.exists(path):
