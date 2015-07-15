@@ -218,7 +218,7 @@ def backup_collection(coll_src,
 
 
 # adb = MongoClient('mongodb://localhost/)
-# backup_collection(adb.log_traffic, adb.log_traffic_2, condition=None, config_path='/m/src/adflex/db_backup/src/config.yaml')
+# backup_collection(adb.log_traffic, adb.log_traffic_2, config_path='/m/src/adflex/db_backup/src/config.yaml')
 
 
 def init():
