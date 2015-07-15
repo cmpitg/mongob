@@ -292,14 +292,14 @@ def backup_collection(coll_src,
 # backup_collection(adb.log_traffic, adb.log_traffic_2, config_path='/m/src/adflex/db_backup/src/config.yaml')
 
 
-def init():
-    milisecs_passed()
-
-
-def backup():
-    init()
-    for name in COLLECTIONS:
-        backup_collection(name)
+def get_db(conn_str):
+    """
+    Retrieves a DB from conn_str.  conn_str is of the following format
+    mongodb://[username][[:[password]]@]<host>/<db_name>.
+    """
+    db_name_pos = conn_str.rfind("/") + 1
+    db_name     = conn_str[db_name_pos:]
+    return MongoClient(conn_str)[db_name]
 
 
 def main():
