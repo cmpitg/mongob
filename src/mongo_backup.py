@@ -155,21 +155,25 @@ def build_query(path):
         return {}
 
 
-def backup_collection(name):
-    global LAST_TIME
+def backup_collection(coll_src, coll_dest, condition, logger=None):
+    """
+    Backups collection from coll_src to coll_dest with a pre-defined search
+    condition.
+    """
+    logger = logger or LOGGER
 
-    LOGGER.info("processing collection %s", name)
-    LOGGER.info("source: %s; destination: %s",
-                         SOURCE_DB[name].count(),
-                         DEST_DB[name].count())
-    LAST_TIME = dt.now()
+    logger.info(
+        "backing up %s (%s docs) ⇒ %s (%s docs)",
+        coll_src.name,
+        coll_src.count(),
+        coll_dest.name,
+        coll_dest.count()
+    )
 
-    source_collection = SOURCE_DB[name]
-    dest_collection   = DEST_DB[name]
+    update_last_time()
+
     current_docs      = []
     config            = read_config()
-    # docs              = source_collection.find().sort([('_id', pymongo.DESCENDING )])
-    docs              = source_collection.find().sort([('date', pymongo.DESCENDING )]).limit(MAX_DOCUMENTS)
 
     def insert_to_dest():
         LOGGER.info('rate: %s → batch inserting %s documents into %s',
