@@ -163,7 +163,10 @@ def backup_collection(coll_src,
     Backups collection from coll_src to coll_dest with a pre-defined search
     condition.
     """
-    logger = logger or LOGGER
+    logger        = logger or LOGGER
+    current_docs  = []
+    config        = read_config(path=config_path)
+    docs          = find_docs_to_update(coll_dest, condition)
 
     logger.info(
         "backing up %s (%s docs) ⇒ %s (%s docs)",
@@ -172,43 +175,32 @@ def backup_collection(coll_src,
         coll_dest.name,
         coll_dest.count()
     )
-
-    current_docs      = []
-    config            = read_config(path=config_path)
-
     logger.info('rate: %s doc(s)/sec', config['rate'])
 
     update_last_time()
 
-    return
-
     def insert_to_dest():
-        logger.info('rate: %s → batch inserting %s documents into %s',
-                    config['rate'],
-                    len(current_docs),
-                    name)
-        dest_collection.insert_many(current_docs)
-        sleep_if_necessary()
+        nonlocal config
+        nonlocal current_docs
 
-    def doc_exists(doc, coll):
-        return len(list(coll.find({ u'_id': doc[u'_id'] }))) != 0
+        logger.info(
+            'bulk inserting: %s → %s',
+            len(current_docs),
+            coll_dest.name
+        )
+        coll_dest.insert_many(current_docs)
+
+        balance_rate()
+        config       = read_config()
+        current_docs = []
 
     for doc in docs:
-        if doc_exists(doc=doc, coll=dest_collection):
-            continue
-            # break
-
         current_docs.append(doc)
-
         if len(current_docs) >= config['rate']:
             insert_to_dest()
-            config = read_config()
-            current_docs = []
 
     if len(current_docs) != 0:
         insert_to_dest()
-        config = read_config()
-        current_docs = []
 
 
 # adb = MongoClient('mongodb://localhost/)
