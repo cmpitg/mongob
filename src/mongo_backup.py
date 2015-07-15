@@ -297,9 +297,13 @@ def get_db(conn_str):
     Retrieves a DB from conn_str.  conn_str is of the following format
     mongodb://[username][[:[password]]@]<host>/<db_name>.
     """
+    global CONNS
+
     db_name_pos = conn_str.rfind("/") + 1
     db_name     = conn_str[db_name_pos:]
-    return MongoClient(conn_str)[db_name]
+    client      = MongoClient(conn_str)
+    CONNS.append(client)
+    return client[db_name]
 
 
 def main():
@@ -309,14 +313,15 @@ def main():
     colls    = config['collections']
 
     for name, condition in colls.items():
+        print(name, condition)
         backup_collection(
             coll_src=db_src[name],
             coll_dest=db_dest[name + '_backup'],
             condition=condition
         )
 
-    db_src.close()
-    db_dest.close()
+    for conn in CONNS:
+        conn.close()
 
 
 if __name__ == '__main__':
