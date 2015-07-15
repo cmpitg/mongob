@@ -32,7 +32,7 @@ LAST_TIME        = dt.now()
 TOTAL_DOCUMENTS  = 0
 
 
-def create_file_if_not_exists(path, content):
+def create_file_if_not_exists(path, content=''):
     """
     Creates a file with a pre-defined content if not exists yet.
     """
