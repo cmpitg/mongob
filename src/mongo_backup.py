@@ -24,7 +24,8 @@ DEFAULT_CONFIG = {'collections': {},
                   'rate': 60000,
                   'stop': False}
 
-CONNS = []
+CONNS      = []
+LAST_TIME  = dt.now()
 
 
 def create_file_if_not_exists(path, content=''):
@@ -111,7 +112,11 @@ def report_collections_size(db, coll_names, logger=None):
         )
 
 
-def milisecs_passed():
+def milisecs_passed(last_time=None):
+    """
+    Calculates time passed since last_time in miliseconds.
+    """
+    last_time = last_time or LAST_TIME
     delta = int((dt.now() - LAST_TIME).total_seconds() * 1000)
     return delta
 
