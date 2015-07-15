@@ -168,6 +168,26 @@ def find_docs_to_update(coll, condition=None):
 # find_docs_to_update(adb.log_traffic).count()
 
 
+def log_last_doc(coll_name, doc_id, logger=None, path=None):
+    """
+    Logs last document inserted into `path' as YAML.
+    """
+    logger  = logger or LOGGER
+    path    = path or DEFAULT_PROGRESS_FILE
+
+    create_file_if_not_exists(path=path, content=yaml.dump({}))
+
+    with open(path, 'r') as input:
+        progress = yaml.load(input)
+
+    progress[coll_name] = doc_id
+
+    with open(path, 'w') as output:
+        output.write(yaml.dump(progress))
+
+    logger.info('last document ID: %s in %s', doc_id, coll_name)
+
+
 def backup_collection(coll_src,
                       coll_dest,
                       condition=None,
