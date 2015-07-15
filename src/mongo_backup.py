@@ -54,11 +54,10 @@ def read_config(path=None):
     the file is located at DEFAULT_CONFIG_FILE_NAME.  If the config file
     doesn't exist, it is created with content DEFAULT_CONFIG.
     """
-    if not path:
-        path = os.path.join(
-            os.path.dirname(__file__),
-            DEFAULT_CONFIG_FILE_NAME
-        )
+    path = path or os.path.join(
+        os.path.dirname(__file__),
+        DEFAULT_CONFIG_FILE_NAME
+    )
     create_file_if_not_exists(
         path=path,
         content=yaml.dump(DEFAULT_CONFIG)
