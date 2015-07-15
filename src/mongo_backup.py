@@ -154,7 +154,11 @@ def build_query(path):
         return {}
 
 
-def backup_collection(coll_src, coll_dest, condition, logger=None):
+def backup_collection(coll_src,
+                      coll_dest,
+                      condition,
+                      config_path=None,
+                      logger=None):
     """
     Backups collection from coll_src to coll_dest with a pre-defined search
     condition.
@@ -169,16 +173,20 @@ def backup_collection(coll_src, coll_dest, condition, logger=None):
         coll_dest.count()
     )
 
+    current_docs      = []
+    config            = read_config(path=config_path)
+
+    logger.info('rate: %s doc(s)/sec', config['rate'])
+
     update_last_time()
 
-    current_docs      = []
-    config            = read_config()
+    return
 
     def insert_to_dest():
-        LOGGER.info('rate: %s → batch inserting %s documents into %s',
-                             config['rate'],
-                             len(current_docs),
-                             name)
+        logger.info('rate: %s → batch inserting %s documents into %s',
+                    config['rate'],
+                    len(current_docs),
+                    name)
         dest_collection.insert_many(current_docs)
         sleep_if_necessary()
 
@@ -201,6 +209,10 @@ def backup_collection(coll_src, coll_dest, condition, logger=None):
         insert_to_dest()
         config = read_config()
         current_docs = []
+
+
+# adb = MongoClient('mongodb://localhost/)
+# backup_collection(adb.log_traffic, adb.log_traffic_2, condition=None, config_path='/m/src/adflex/db_backup/src/config.yaml')
 
 
 def init():
