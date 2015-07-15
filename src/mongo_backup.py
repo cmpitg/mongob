@@ -30,15 +30,6 @@ DEFAULT_CONFIG = {'collections': {},
                   'rate': 60000,
                   'stop': False}
 
-SOURCE         = MongoClient("mongodb://adsinapp:aDsinApP123@125.212.201.147/ads_in_app")
-SOURCE_DB      = SOURCE.ads_in_app
-DEST           = MongoClient("mongodb://adsinapp:aDsinApP123@125.212.201.146/ads_in_app")
-DEST_DB        = DEST.ads_in_app
-MAX_DOCUMENTS  = 500000
-
-LAST_TIME        = dt.now()
-TOTAL_DOCUMENTS  = 0
-
 
 def create_file_if_not_exists(path, content=''):
     """
