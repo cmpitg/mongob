@@ -87,7 +87,7 @@ def check_stop_flag(config):
     Checks if the stop flag presents in config and stop the application 
     gracefully if it is.
     """
-    if not config['stop']:
+    if not config.get('stop', False):
         return
 
     for conn in CONNS:
