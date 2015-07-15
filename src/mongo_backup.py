@@ -19,10 +19,10 @@ log_progress_file_handler  = logging.FileHandler(
 log_progress_file_handler.setFormatter(log_formatter)
 log_stream_handler = logging.StreamHandler()
 log_stream_handler.setFormatter(log_formatter)
-LOGGER_PROGRESS = logging.getLogger('progress')
-LOGGER_PROGRESS.setLevel(logging.INFO)
-LOGGER_PROGRESS.addHandler(log_progress_file_handler)
-LOGGER_PROGRESS.addHandler(log_stream_handler)
+LOGGER = logging.getLogger('progress')
+LOGGER.setLevel(logging.INFO)
+LOGGER.addHandler(log_progress_file_handler)
+LOGGER.addHandler(log_stream_handler)
 
 
 DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
@@ -51,7 +51,7 @@ def print_collection_size(coll, logger=None):
     """
     Prints collection size.
     """
-    logger = logger or LOGGER_PROGRESS
+    logger = logger or LOGGER
     logger.info("{}: {} document(s)".format(coll.name, coll.count()))
 
 
@@ -108,7 +108,7 @@ def report_collections_size(db, coll_names, logger=None):
     """
     Reports size of all collections.
     """
-    logger = logger or LOGGER_PROGRESS
+    logger = logger or LOGGER
 
     logger.info("all collection size:")
 
@@ -145,8 +145,8 @@ def build_query(path):
 def backup_collection(name):
     global LAST_TIME
 
-    LOGGER_PROGRESS.info("processing collection %s", name)
-    LOGGER_PROGRESS.info("source: %s; destination: %s",
+    LOGGER.info("processing collection %s", name)
+    LOGGER.info("source: %s; destination: %s",
                          SOURCE_DB[name].count(),
                          DEST_DB[name].count())
     LAST_TIME = dt.now()
@@ -159,7 +159,7 @@ def backup_collection(name):
     docs              = source_collection.find().sort([('date', pymongo.DESCENDING )]).limit(MAX_DOCUMENTS)
 
     def insert_to_dest():
-        LOGGER_PROGRESS.info('rate: %s → batch inserting %s documents into %s',
+        LOGGER.info('rate: %s → batch inserting %s documents into %s',
                              config['rate'],
                              len(current_docs),
                              name)
