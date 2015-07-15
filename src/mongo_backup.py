@@ -12,8 +12,10 @@ from bson.objectid import ObjectId
 
 
 log_formatter              = logging.Formatter('%(asctime)s : %(message)s')
-log_progress_file_handler  = logging.FileHandler('mongo_backup_progress.log',
-                                                mode='a+')
+log_progress_file_handler  = logging.FileHandler(
+    'mongo_backup_progress.log',
+    mode='a+'
+)
 log_progress_file_handler.setFormatter(log_formatter)
 log_stream_handler = logging.StreamHandler()
 log_stream_handler.setFormatter(log_formatter)
@@ -45,11 +47,12 @@ def create_file_if_not_exists(path, content=''):
             f.write(content)
 
 
-def print_collection_size(db, name):
+def print_collection_size(coll, logger=None):
     """
     Prints collection size.
     """
-    print("{}: {} document(s)".format(name, db[name].count()))
+    logger = logger or LOGGER_PROGRESS
+    logger.info("{}: {} document(s)".format(coll.name, coll.count()))
 
 
 def read_config(path=None):
@@ -101,12 +104,19 @@ def check_stop_flag(config):
     sys.exit(0)
 
 
-def report_collections_size():
-    LOGGER_PROGRESS.info("collections with MongoID")
-    map(print_collection_size, COLLECTIONS)
+def report_collections_size(db, coll_names, logger=None):
+    """
+    Reports size of all collections.
+    """
+    logger = logger or LOGGER_PROGRESS
 
-    # LOGGER_PROGRESS.info("collections without MongoID")
-    # map(print_collection_size, COLLECTIONS_DATE)
+    logger.info("all collection size:")
+
+    for name in coll_names:
+        print_collection_size(
+            db[name],
+            logger=logger
+        )
 
 
 def milisecs_passed():
