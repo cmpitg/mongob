@@ -303,11 +303,20 @@ def get_db(conn_str):
 
 
 def main():
-    # report_collections_size()
-    backup()
+    config   = read_config()
+    db_src   = get_db(config['db_source'])
+    db_dest  = get_db(config['db_destination'])
+    colls    = config['collections']
 
-    SOURCE.close()
-    DEST.close()
+    for name, condition in colls.items():
+        backup_collection(
+            coll_src=db_src[name],
+            coll_dest=db_dest[name + '_backup'],
+            condition=condition
+        )
+
+    db_src.close()
+    db_dest.close()
 
 
 if __name__ == '__main__':
