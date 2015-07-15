@@ -121,19 +121,26 @@ def milisecs_passed(last_time=None):
     return delta
 
 
+def update_last_time(new_value=None):
+    """
+    Updates `LAST_TIME'.
+    """
+    global LAST_TIME
+    LAST_TIME = new_value or dt.now()
+
+
 def balance_rate(unit=None, last_time=None):
     """
     Sleeps if necessary to keep up with current backup rates and updates
     current execution time to LAST_TIME.
     """
-    global LAST_TIME
     last_time = last_time or LAST_TIME
     unit      = unit or 1000
 
     delta = milisecs_passed()
     if delta < unit:
         time.sleep((unit - delta) / 1000)
-        LAST_TIME = dt.now()
+        update_last_time()
 
 
 # LAST_TIME = dt.now(); balance_rate(); milisecs_passed()
