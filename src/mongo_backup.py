@@ -224,7 +224,16 @@ def backup_collection(coll_src,
             len(current_docs),
             coll_dest.name
         )
-        coll_dest.insert_many(current_docs)
+
+        try:
+            coll_dest.insert_many(current_docs, ordered=False)
+        except Exception as e:
+            passed
+
+        log_last_doc(
+            coll_name=coll_dest.name,
+            doc=current_docs[-1]
+        )
 
         balance_rate()
         config       = read_config()
@@ -263,3 +272,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# try:
+#     aa.insert_many([{ '_id': doc1 }, { '_id': doc2 }, { '_id': doc3 }], ordered=False)
+# except Exception as e:
+#     print(str(e))
