@@ -22,6 +22,14 @@ LOGGER_PROGRESS.setLevel(logging.INFO)
 LOGGER_PROGRESS.addHandler(log_progress_file_handler)
 LOGGER_PROGRESS.addHandler(log_stream_handler)
 
+
+DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
+DEFAULT_CONFIG = {'collections': {},
+                  'source_db': 'mongodb://localhost/test_db'
+                  'destination_db': 'mongodb://localhost/dest_db',
+                  'rate': 60000,
+                  'stop': False}
+
 SOURCE         = MongoClient("mongodb://adsinapp:aDsinApP123@125.212.201.147/ads_in_app")
 SOURCE_DB      = SOURCE.ads_in_app
 DEST           = MongoClient("mongodb://adsinapp:aDsinApP123@125.212.201.146/ads_in_app")
