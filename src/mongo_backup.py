@@ -160,7 +160,7 @@ def find_docs_to_update(coll, condition=None):
     None or not supplied, find all documents.  TODO: documentation about
     grammar that `condition' supports.
     """
-    if not condition or condition == []:
+    if not condition or condition == [] or condition == {}:
         return coll.find()
 
 
