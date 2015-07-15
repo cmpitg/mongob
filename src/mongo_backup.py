@@ -48,7 +48,7 @@ def print_collection_size(db, name):
     """
     Prints collection size.
     """
-    print("{}: {}".format(db[name], db[name].count()))
+    print("{}: {} document(s)".format(name, db[name].count()))
 
 
 def read_config(path=None):
