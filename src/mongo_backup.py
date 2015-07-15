@@ -51,28 +51,35 @@ def print_collection_size(db, name):
 
 
 def read_config(path=None):
+    """
+    Reads YAML config file and converts it to Python dictionary.  By default
+    the file is located at DEFAULT_CONFIG_FILE_NAME.  If the config file
+    doesn't exist, it is created with content DEFAULT_CONFIG.
+    """
+    if not path:
+        path = os.path.join(
+            os.path.dirname(__file__),
+            DEFAULT_CONFIG_FILE_NAME
+        )
+    create_file_if_not_exists(path, content=DEFAULT_CONFIG)
+
+    res = {}
+
     try:
-        if not path:
-            path = os.path.join(os.path.dirname(__file__), "rate.txt")
-
-        with open(path, 'r') as inp:
-            lines = inp.readlines()
-
-        if len(lines) > 1 and str.startswith(lines[1], 'stop'):
-            LOGGER_PROGRESS.warn('stopped by user')
-            sys.exit(1)
-            
-        else:
-            return {
-                'rate': int(lines[0]),
-                'stop': False
-            }
+        with open(path, 'r') as input:
+            res = yaml.load(input)
     except Exception as e:
-        print(str(e))
-        return {
-            'rate': 1000,
-            'stop': False
-        }
+        sys.stderr.write(
+            "Invalid YAML syntax in config.yaml: {}\n",
+            str(e)
+        )
+        sys.exit(1)
+
+    check_stop_flag(res)
+
+    return res
+
+
 
 
 def report_collections_size():
