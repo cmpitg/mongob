@@ -1,2 +1,3 @@
 /src/mongo_backup_progress.log
 **/__pycache__
+/src/current_progress.yaml
