@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/env python
-
-# $ rsync -HaXxv mongo_backup.py rate.txt cmpitg@125.212.201.146:/home/cmpitg/Data/scripts/
+#!/usr/bin/env python3
 
 import logging
 import sys
@@ -34,42 +31,6 @@ MAX_DOCUMENTS  = 500000
 LAST_TIME        = dt.now()
 TOTAL_DOCUMENTS  = 0
 
-
-COLLECTIONS = ['adv_user',
-               'app_category',
-               'apps',
-               'apps_permission',
-               'banned_partner',
-               'config',
-               'config_sdk',
-               'dev_sdk',
-               'follow_revenue',
-               'info_adflex_app',
-               'info_domain',
-               'log_campaign',
-               'log_campaign_status',
-               'log_fake_install',
-               'log_install_daily',
-               'log_money',
-               'log_open_date',
-               'log_pub_postback',
-               'log_revenue_source',
-               'log_traffic_total',
-               'log_warning_rate',
-               'log_click_info_2016',
-               'pricing',
-               'pub_manager',
-               'publisher_postback',
-               'rates',
-               'users']
-
-COLLECTIONS_DATE = ['log_traffic',
-                    'log_traffic_country',
-                    'log_traffic_hourly',
-                    'log_country',
-                    'log_install_info']
-
-COLLECTIONS = COLLECTIONS_DATE
 
 
 def create_file_if_not_exists(path):
