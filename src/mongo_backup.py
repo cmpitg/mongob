@@ -180,7 +180,7 @@ def backup_collection(coll_src,
     logger        = logger or LOGGER
     current_docs  = []
     config        = read_config(path=config_path)
-    docs          = find_docs_to_update(coll_dest, condition)
+    docs          = find_docs_to_update(coll_src, condition)
 
     logger.info(
         "backing up %s (%s docs) ⇒ %s (%s docs)",
