@@ -25,10 +25,12 @@ LOGGER_PROGRESS.addHandler(log_stream_handler)
 
 DEFAULT_CONFIG_FILE_NAME = 'config.yaml'
 DEFAULT_CONFIG = {'collections': {},
-                  'source_db': 'mongodb://localhost/test_db'
+                  'source_db': 'mongodb://localhost/test_db',
                   'destination_db': 'mongodb://localhost/dest_db',
                   'rate': 60000,
                   'stop': False}
+
+CONNS = []
 
 
 def create_file_if_not_exists(path, content=''):
