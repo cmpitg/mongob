@@ -44,10 +44,11 @@ def create_file_if_not_exists(path, content=''):
             f.write(content)
 
 
-def print_collection_size(name):
-    """Print collection size"""
-    coll = SOURCE_DB[name]
-    print("{}: {}".format(name, coll.count()))
+def print_collection_size(db, name):
+    """
+    Prints collection size.
+    """
+    print("{}: {}".format(db[name], db[name].count()))
 
 
 def read_config(path=None):
