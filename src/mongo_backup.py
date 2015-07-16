@@ -159,20 +159,10 @@ def balance_rate(unit=None, last_time=None):
 # LAST_TIME = dt.now(); balance_rate(); milisecs_passed()
 
 
-def build_query(path):
-    if os.path.exists(path):
-        with open(path, 'r') as f:
-            res = f.read()
-        return { "_id": { "$gt": ObjectId(res) }}
-    else:
-        return {}
-
-
 def find_docs_to_update(coll,
                         condition=None,
                         progress_path=None,
-                        logger=None
-):
+                        logger=None):
     """
     Builds and queries list of docs to update in `coll'.  If `condition' is
     None or not supplied, find all documents.  TODO: documentation about
