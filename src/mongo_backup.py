@@ -331,3 +331,10 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+#
+# use test_db;
+# db.log_traffic.count();
+# db.log_traffic.find({ _id: { '$gte': ObjectId('555317f7d290053143db668b') } }).count();
+#
