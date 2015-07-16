@@ -33,8 +33,8 @@ DEFAULT_CONFIG = {'collections': {},
                   'rate': 60000,
                   'stop': False}
 
-CONNS      = []
-LAST_TIME  = dt.now()
+CONNECTIONS = set()
+LAST_TIME   = dt.now()
 
 
 def create_file_if_not_exists(path, content=''):
@@ -86,7 +86,15 @@ def read_config(path=None):
     return res
 
 
-def check_stop_flag(config):
+def close_connections():
+    """
+    Gracefully closes all connections.
+    """
+    for conn in CONNECTIONS:
+        conn.close()
+
+
+def check_stop_flag(config, logger=LOGGER):
     """
     Checks if the stop flag presents in config and stop the application
     gracefully if it is.
@@ -94,10 +102,10 @@ def check_stop_flag(config):
     if not config.get('stop', False):
         return
 
-    for conn in CONNS:
-        conn.close()
+    logger = logger or LOGGER
+    logger.info('gracefully stopped by user')
 
-    print("Stopped by user.")
+    close_connections()
 
     sys.exit(0)
 
@@ -297,12 +305,12 @@ def get_db(conn_str):
     Retrieves a DB from conn_str.  conn_str is of the following format
     mongodb://[username][[:[password]]@]<host>/<db_name>.
     """
-    global CONNS
+    global CONNECTIONS
 
     db_name_pos = conn_str.rfind("/") + 1
     db_name     = conn_str[db_name_pos:]
     client      = MongoClient(conn_str)
-    CONNS.append(client)
+    CONNECTIONS.add(client)
     return client[db_name]
 
 
@@ -320,8 +328,7 @@ def main():
             condition=condition
         )
 
-    for conn in CONNS:
-        conn.close()
+    close_connections()
 
 
 if __name__ == '__main__':
