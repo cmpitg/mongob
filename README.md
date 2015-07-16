@@ -61,3 +61,13 @@ already existed.
   in DB `adflex_test_backup`.
 
 ### Set 03 - Backup all recent data in 7 days
+
+* Path: [`test/set03_7_recent_days/`](./test/set03_recent7_recent_days)
+
+* Data set:
+  [`test/set03_recent7_recent_days/data.json`](./test/set03_recent7_recent_days/data.json)
+
+* This test generates collection `log_click` in DB `adflex_test` consisting of
+  500 documents with `date` field spreading across 10 days (50 documents/day).
+  It then performs the backup 350 documents in the last 7 days to `log_click`
+  in DB `adflex_test_backup`.
