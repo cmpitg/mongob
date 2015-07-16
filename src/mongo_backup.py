@@ -35,7 +35,7 @@ DEFAULT_CONFIG = {'collections': {},
                   'rate': 60000,
                   'stop': False}
 
-CONNECTIONS = set()
+CONNECTIONS = []
 LAST_TIME   = dt.now()
 
 
@@ -302,7 +302,13 @@ def get_db(conn_str):
     db_name_pos = conn_str.rfind("/") + 1
     db_name     = conn_str[db_name_pos:]
     client      = MongoClient(conn_str)
-    CONNECTIONS.add(client)
+
+    try:
+        CONNECTIONS.index(client)
+        CONNECTIONS.append(client)
+    except Exception:
+        pass
+
     return client[db_name]
 
 
