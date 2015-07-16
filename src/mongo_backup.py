@@ -322,7 +322,7 @@ def main():
         print(name, condition)
         backup_collection(
             coll_src=db_src[name],
-            coll_dest=db_dest[name + '_backup'],
+            coll_dest=db_dest[name],
             condition=condition
         )
 
@@ -331,8 +331,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# try:
-#     aa.insert_many([{ '_id': doc1 }, { '_id': doc2 }, { '_id': doc3 }], ordered=False)
-# except Exception as e:
-#     print(str(e))
