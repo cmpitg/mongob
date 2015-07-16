@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import os
 sys.path.append(
     os.path.dirname(__file__)
 )
@@ -9,6 +10,7 @@ import logging
 import os
 import time
 import pymongo
+import yaml
 
 from datetime import datetime as dt
 from datetime import timedelta
