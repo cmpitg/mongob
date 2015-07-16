@@ -272,7 +272,7 @@ def backup_collection(coll_src,
 
         log_last_doc(
             coll_name=coll_dest.name,
-            doc=current_docs[-1]
+            doc_id=str(current_docs[-1]['_id'])
         )
 
         balance_rate()
