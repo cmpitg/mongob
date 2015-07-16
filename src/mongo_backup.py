@@ -268,7 +268,7 @@ def backup_collection(coll_src,
         try:
             coll_dest.insert_many(current_docs, ordered=False)
         except Exception as e:
-            passed
+            pass
 
         log_last_doc(
             coll_name=coll_dest.name,
