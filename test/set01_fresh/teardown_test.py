@@ -28,8 +28,11 @@ def main():
 
     print("→ Removing progress and log files")
     os.chdir(os.path.dirname(__file__))
-    for res in RESOURCES:
-        os.remove(res)
+    try:
+        for res in RESOURCES:
+            os.remove(res)
+    except Exception:
+        pass
 
 
 if __name__ == '__main__':
