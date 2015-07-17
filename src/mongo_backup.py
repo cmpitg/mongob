@@ -374,6 +374,17 @@ def set_global_params(args):
 def main():
     set_global_params(read_cmd_args())
 
+    # print(CONFIG_FILE)
+    # print(PROGRESS_FILE)
+    # print(LOG_FILE)
+
+    # config   = read_config()
+    # import pprint as pp
+    # pp.pprint(config)
+
+    # print(LOGGER)
+    # sys.exit(0)
+
     config   = read_config()
     db_src   = get_db(config['db_source'])
     db_dest  = get_db(config['db_destination'])
