@@ -22,8 +22,8 @@ PROGRESS_FILE  = os.path.join(os.path.dirname(__file__), 'current_progress.yaml'
 LOG_FILE       = os.path.join(os.path.dirname(__file__), 'mongo_backup.log')
 
 DEFAULT_CONFIG = {'collections': {},
-                  'source_db': 'mongodb://localhost/test_db',
-                  'destination_db': 'mongodb://localhost/dest_db',
+                  'db_source': 'mongodb://localhost/test_db',
+                  'db_source': 'mongodb://localhost/dest_db',
                   'rate': 60000,
                   'stop': False}
 
