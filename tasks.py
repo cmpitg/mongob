@@ -29,6 +29,7 @@ def test_01():
     print('=== Test set: Fresh backup ===')
     os.chdir('test/set01_fresh/')
     run('./setup_test.py')
+    print('--- Running test ---')
     run(
         '../../src/mongo_backup.py --config config.yaml'
         + ' --progress-file current_progress.yaml'

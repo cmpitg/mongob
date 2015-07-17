@@ -5,7 +5,7 @@ import os
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
 
-TEST_DESC       = '→ Setting up test for fresh backup'
+TEST_DESC       = '--- Setting up test for fresh backup ---'
 MONGO_URI_SRC   = 'mongodb://localhost/'
 MONGO_URI_DEST  = MONGO_URI_SRC
 DB_NAME_SRC     = 'test_db'
