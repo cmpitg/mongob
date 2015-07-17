@@ -327,7 +327,7 @@ def read_cmd_args():
     parser.add_argument(
         "--config",
         help='specify YAML config file, default: {}'.format(DEFAULT_CONFIG_FILE),
-        default=DEFAULT_CONFIG,
+        default=DEFAULT_CONFIG_FILE,
         type=str
     )
     parser.add_argument(
@@ -346,8 +346,29 @@ def read_cmd_args():
     return vars(parser.parse_args())
 
 
+def set_global_params(args):
+    """
+    Sets the appropriate global variables based on the passed-in command line
+    arguments.
+    """
+    global DEFAULT_CONFIG_FILE
+    global DEFAULT_PROGRESS_FILE
+    global DEFAULT_LOG_FILE
+
+    DEFAULT_CONFIG_FILE    = args['config']
+    DEFAULT_PROGRESS_FILE  = args['progress_file']
+    DEFAULT_LOG_FILE       = args['log']
+
+
 def main():
-    args     = read_cmd_args()
+    set_global_params(read_cmd_args())
+
+    print(DEFAULT_CONFIG_FILE)
+    print(DEFAULT_PROGRESS_FILE)
+    print(DEFAULT_LOG_FILE)
+
+    sys.exit(0)
+
     config   = read_config()
     db_src   = get_db(config['db_source'])
     db_dest  = get_db(config['db_destination'])
