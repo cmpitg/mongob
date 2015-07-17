@@ -253,6 +253,8 @@ def backup_collection(coll_src,
     Backups collection from coll_src to coll_dest with a pre-defined search
     condition.
     """
+    logger = logger or LOGGER
+    config = read_config(path=config_path)
     logger.info(
         "backing up %s (%s docs) ⇒ %s (%s docs)",
         coll_src.name,
@@ -262,9 +264,7 @@ def backup_collection(coll_src,
     )
     logger.info('rate: %s doc(s)/sec', config['rate'])
 
-    logger        = logger or LOGGER
     current_docs  = []
-    config        = read_config(path=config_path)
     docs          = find_docs_to_update(coll_src, condition)
 
     update_last_time()
