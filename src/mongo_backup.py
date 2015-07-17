@@ -21,18 +21,9 @@ from bson.objectid import ObjectId
 from backup_logger import LOGGER
 
 
-DEFAULT_CONFIG_FILE    = os.path.join(
-    os.path.dirname(__file__),
-    'config.yaml'
-)
-DEFAULT_PROGRESS_FILE  = os.path.join(
-    os.path.dirname(__file__),
-    'current_progress.yaml'
-)
-DEFAULT_LOG_FILE       = os.path.join(
-    os.path.dirname(__file__),
-    'mongo_backup.log'
-)
+CONFIG_FILE    = os.path.join(os.path.dirname(__file__), 'config.yaml')
+PROGRESS_FILE  = os.path.join(os.path.dirname(__file__), 'current_progress.yaml')
+LOG_FILE       = os.path.join(os.path.dirname(__file__), 'mongo_backup.log')
 
 DEFAULT_CONFIG = {'collections': {},
                   'source_db': 'mongodb://localhost/test_db',
@@ -67,10 +58,10 @@ def print_collection_size(coll, logger=None):
 def read_config(path=None):
     """
     Reads YAML config file and converts it to Python dictionary.  By default
-    the file is located at DEFAULT_CONFIG_FILE.  If the config file doesn't
+    the file is located at CONFIG_FILE.  If the config file doesn't
     exist, it is created with content DEFAULT_CONFIG.
     """
-    path = path or DEFAULT_CONFIG_FILE
+    path = path or CONFIG_FILE
     create_file_if_not_exists(
         path=path,
         content=yaml.dump(DEFAULT_CONFIG)
@@ -179,7 +170,7 @@ def find_docs_to_update(coll,
         return coll.find()
 
     logger        = logger or LOGGER
-    progress_path = progress_path or DEFAULT_PROGRESS_FILE
+    progress_path = progress_path or PROGRESS_FILE
     method        = condition['method']
     name          = coll.name
 
@@ -220,7 +211,7 @@ def log_last_doc(coll_name, doc_id, logger=None, path=None):
     Logs last document inserted into `path' as YAML.
     """
     logger  = logger or LOGGER
-    path    = path or DEFAULT_PROGRESS_FILE
+    path    = path or PROGRESS_FILE
 
     create_file_if_not_exists(path=path, content=yaml.dump({}))
 
@@ -326,20 +317,20 @@ def read_cmd_args():
     )
     parser.add_argument(
         "--config",
-        help='specify YAML config file, default: {}'.format(DEFAULT_CONFIG_FILE),
-        default=DEFAULT_CONFIG_FILE,
+        help='specify YAML config file, default: {}'.format(CONFIG_FILE),
+        default=CONFIG_FILE,
         type=str
     )
     parser.add_argument(
         '--progress-file',
-        help='specify YAML progress file, default: {}'.format(DEFAULT_PROGRESS_FILE),
-        default=DEFAULT_PROGRESS_FILE,
+        help='specify YAML progress file, default: {}'.format(PROGRESS_FILE),
+        default=PROGRESS_FILE,
         type=str
     )
     parser.add_argument(
         '--log',
-        help='specify log file, default: {}'.format(DEFAULT_LOG_FILE),
-        default=DEFAULT_LOG_FILE,
+        help='specify log file, default: {}'.format(LOG_FILE),
+        default=LOG_FILE,
         type=str
     )
     
@@ -351,21 +342,21 @@ def set_global_params(args):
     Sets the appropriate global variables based on the passed-in command line
     arguments.
     """
-    global DEFAULT_CONFIG_FILE
-    global DEFAULT_PROGRESS_FILE
-    global DEFAULT_LOG_FILE
+    global CONFIG_FILE
+    global PROGRESS_FILE
+    global LOG_FILE
 
-    DEFAULT_CONFIG_FILE    = args['config']
-    DEFAULT_PROGRESS_FILE  = args['progress_file']
-    DEFAULT_LOG_FILE       = args['log']
+    CONFIG_FILE    = args['config']
+    PROGRESS_FILE  = args['progress_file']
+    LOG_FILE       = args['log']
 
 
 def main():
     set_global_params(read_cmd_args())
 
-    print(DEFAULT_CONFIG_FILE)
-    print(DEFAULT_PROGRESS_FILE)
-    print(DEFAULT_LOG_FILE)
+    print(CONFIG_FILE)
+    print(PROGRESS_FILE)
+    print(LOG_FILE)
 
     sys.exit(0)
 
