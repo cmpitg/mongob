@@ -11,6 +11,7 @@ import os
 import time
 import pymongo
 import yaml
+import argparse
 
 from datetime import datetime as dt
 from datetime import timedelta
@@ -20,13 +21,17 @@ from bson.objectid import ObjectId
 from backup_logger import LOGGER
 
 
-DEFAULT_CONFIG_FILE_NAME = os.path.join(
+DEFAULT_CONFIG_FILE    = os.path.join(
     os.path.dirname(__file__),
     'config.yaml'
 )
-DEFAULT_PROGRESS_FILE    = os.path.join(
+DEFAULT_PROGRESS_FILE  = os.path.join(
     os.path.dirname(__file__),
     'current_progress.yaml'
+)
+DEFAULT_LOG_FILE       = os.path.join(
+    os.path.dirname(__file__),
+    'mongo_backup.log'
 )
 
 DEFAULT_CONFIG = {'collections': {},
@@ -62,10 +67,10 @@ def print_collection_size(coll, logger=None):
 def read_config(path=None):
     """
     Reads YAML config file and converts it to Python dictionary.  By default
-    the file is located at DEFAULT_CONFIG_FILE_NAME.  If the config file
-    doesn't exist, it is created with content DEFAULT_CONFIG.
+    the file is located at DEFAULT_CONFIG_FILE.  If the config file doesn't
+    exist, it is created with content DEFAULT_CONFIG.
     """
-    path = path or DEFAULT_CONFIG_FILE_NAME
+    path = path or DEFAULT_CONFIG_FILE
     create_file_if_not_exists(
         path=path,
         content=yaml.dump(DEFAULT_CONFIG)
@@ -312,7 +317,37 @@ def get_db(conn_str):
     return client[db_name]
 
 
+def read_cmd_args():
+    """
+    Sets and reads command line arguments.
+    """
+    parser = argparse.ArgumentParser(
+        description='AdFlex MongoDB collection to collection backup tool.'
+    )
+    parser.add_argument(
+        "--config",
+        help='specify YAML config file, default: {}'.format(DEFAULT_CONFIG_FILE),
+        default=DEFAULT_CONFIG,
+        type=str
+    )
+    parser.add_argument(
+        '--progress-file',
+        help='specify YAML progress file, default: {}'.format(DEFAULT_PROGRESS_FILE),
+        default=DEFAULT_PROGRESS_FILE,
+        type=str
+    )
+    parser.add_argument(
+        '--log',
+        help='specify log file, default: {}'.format(DEFAULT_LOG_FILE),
+        default=DEFAULT_LOG_FILE,
+        type=str
+    )
+    
+    return vars(parser.parse_args())
+
+
 def main():
+    args     = read_cmd_args()
     config   = read_config()
     db_src   = get_db(config['db_source'])
     db_dest  = get_db(config['db_destination'])
