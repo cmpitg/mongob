@@ -11,6 +11,7 @@ MONGO_URI_DEST  = MONGO_URI_SRC
 DB_NAME_SRC     = 'test_db'
 DB_NAME_DEST    = 'test_db_backup'
 COLLECTION_NAME = 'log_traffic'
+RESOURCES       = ['current_progress.yaml', 'backup.log']
 
 
 def main():
@@ -24,6 +25,11 @@ def main():
 
     client_src.close()
     client_dest.close()
+
+    print("→ Removing progress and log files")
+    os.chdir(os.path.dirname(__file__))
+    for res in RESOURCES:
+        os.remove(res)
 
 
 if __name__ == '__main__':
