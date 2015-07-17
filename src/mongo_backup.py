@@ -16,8 +16,6 @@ from datetime import timedelta
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-from backup_logger import LOGGER
-
 
 CONFIG_FILE    = os.path.join(os.path.dirname(__file__), 'config.yaml')
 PROGRESS_FILE  = os.path.join(os.path.dirname(__file__), 'current_progress.yaml')
@@ -29,8 +27,30 @@ DEFAULT_CONFIG = {'collections': {},
                   'rate': 60000,
                   'stop': False}
 
-CONNECTIONS = []
-LAST_TIME   = dt.now()
+CONNECTIONS    = []
+LAST_TIME      = dt.now()
+LOGGER         = None
+
+
+def setup_logger(log_file=None):
+    """
+    Sets up logger.
+    """
+    log_file = log_file or LOG_FILE
+
+    log_formatter              = logging.Formatter('%(asctime)s : %(message)s')
+    log_progress_file_handler  = logging.FileHandler(LOG_FILE, mode='a+')
+    log_progress_file_handler.setFormatter(log_formatter)
+
+    log_stream_handler = logging.StreamHandler()
+    log_stream_handler.setFormatter(log_formatter)
+
+    logger = logging.getLogger('progress')
+    logger.setLevel(logging.INFO)
+    logger.addHandler(log_progress_file_handler)
+    logger.addHandler(log_stream_handler)
+
+    return logger
 
 
 def create_file_if_not_exists(path, content=''):
@@ -343,10 +363,12 @@ def set_global_params(args):
     global CONFIG_FILE
     global PROGRESS_FILE
     global LOG_FILE
+    global LOGGER
 
     CONFIG_FILE    = args['config']
     PROGRESS_FILE  = args['progress_file']
     LOG_FILE       = args['log']
+    LOGGER         = setup_logger(LOG_FILE)
 
 
 def main():
@@ -355,6 +377,7 @@ def main():
     print(CONFIG_FILE)
     print(PROGRESS_FILE)
     print(LOG_FILE)
+    print(LOGGER)
 
     sys.exit(0)
 
