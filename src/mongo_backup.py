@@ -391,7 +391,6 @@ def main():
     colls    = config['collections']
 
     for name, condition in colls.items():
-        print(name, condition)
         backup_collection(
             coll_src=db_src[name],
             coll_dest=db_dest[name],
