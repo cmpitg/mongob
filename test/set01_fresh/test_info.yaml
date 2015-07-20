@@ -2,7 +2,7 @@ mongo_uri_src: mongodb://localhost/
 mongo_uri_dest: mongodb://localhost/
 db_name_src: test_db
 db_name_dest: test_db_backup
-coll_name: random
+coll_name: test_random
 dataset_file: data.json
 temp_res:
   - current_progress.yaml

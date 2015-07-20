@@ -10,6 +10,7 @@ import unittest
 
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
+from invoke import run
 from test_utils import load_test_info, print_desc, print_msg, setup_dataset
 
 
@@ -37,6 +38,8 @@ class TestFreshRun(unittest.TestCase):
             dataset_file=os.path.join(CURRENT_DIR, 'data.json')
         )
 
+        os.chdir(CURRENT_DIR)
+
     def tearDown(self):
         print_msg("Dropping {} in source and destination".format(
             self.test_info['coll_name']
@@ -44,8 +47,7 @@ class TestFreshRun(unittest.TestCase):
         self.coll_src.drop()
         self.coll_dest.drop()
 
-        print("Removing progress and log files")
-        os.chdir(CURRENT_DIR)
+        print_msg("Removing temporary log and resource files")
         try:
             for res in self.test_info['temp_res']:
                 os.remove(res)
@@ -56,8 +58,14 @@ class TestFreshRun(unittest.TestCase):
         self.client_dest.close()
 
     def test_freshrun(self):
-        print_msg('Checking result for {}'.format(self.test_name))
+        print_msg('Running {} test'.format(self.test_name))
+        run(
+            '../../src/mongo_backup.py --config config.yaml'
+            + ' --progress-file current_progress.yaml'
+            + ' --log backup.log'
+        )
 
+        print_msg('Checking result for {}'.format(self.test_name))
         with open(self.test_info['dataset_file'], 'r') as input:
             data_from_file = json_loads(input.read())
             data_from_file.sort(key=lambda x: x['_id'])

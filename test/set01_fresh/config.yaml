@@ -1,7 +1,7 @@
 rate: 60000
 stop: false
 collections:
-  log_traffic:
+  test_random:
     method: object_id
 db_source: mongodb://localhost/test_db
 db_destination: mongodb://localhost/test_db_backup
