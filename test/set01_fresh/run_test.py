@@ -11,7 +11,6 @@ import unittest
 
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
-from invoke import run
 from test_utils import load_test_info, print_desc, print_msg, setup_dataset
 
 
@@ -61,7 +60,7 @@ class TestFreshRun(unittest.TestCase):
 
     def test_freshrun(self):
         print_msg('Running {} test'.format(self.test_name))
-        run(
+        os.system(
             '../../src/mongo_backup.py --config config.yaml'
             + ' --progress-file current_progress.yaml'
             + ' --log backup.log'
