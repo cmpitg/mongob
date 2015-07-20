@@ -22,7 +22,6 @@ def main():
     coll_dest   = client_dest[DB_NAME_SRC][COLLECTION_NAME]
 
     print("→ Dropping {} in source and destination".format(COLLECTION_NAME))
-
     client_src.close()
     client_dest.close()
 
