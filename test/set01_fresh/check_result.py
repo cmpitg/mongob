@@ -1,29 +1,40 @@
 #!/usr/bin/env python3
 
+import sys
 import os
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), "../")
+)
+
 import unittest
+import test_utils
 
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
 
-TEST_DESC       = '--- Checking result ---'
-MONGO_URI_SRC   = 'mongodb://localhost/'
-MONGO_URI_DEST  = MONGO_URI_SRC
-DB_NAME_SRC     = 'test_db'
-DB_NAME_DEST    = 'test_db_backup'
-COLLECTION_NAME = 'log_traffic'
-DATASET_FILE    = os.path.join(os.path.dirname(__file__), 'data.json')
 
+def test_name():
+    """
+    Retrieves test name by getting current directory.
+    """
+    return os.path.basename(os.path.dirname(os.path.abspath(__file__)))
+
+
+TEST_NAME = test_name()
+TEST_INFO = test_utils.load_test_info(TEST_NAME)
+
+##############################################################################
 
 class TestFreshRun(unittest.TestCase):
     def test_freshrun(self):
-        print(TEST_DESC)
-        client_src  = MongoClient(MONGO_URI_SRC)
-        client_dest = MongoClient(MONGO_URI_DEST)
-        coll_src    = client_src[DB_NAME_SRC][COLLECTION_NAME]
-        coll_dest   = client_dest[DB_NAME_SRC][COLLECTION_NAME]
+        test_utils.print_desc('Checking result for {}'.format(TEST_NAME))
 
-        with open(DATASET_FILE, 'r') as input:
+        client_src  = MongoClient(TEST_INFO['mongo_uri_src'])
+        client_dest = MongoClient(TEST_INFO['mongo_uri_dest'])
+        coll_src    = client_src[TEST_INFO['db_name_src']][TEST_INFO['coll_name']]
+        coll_dest   = client_dest[TEST_INFO['db_name_src']][TEST_INFO['coll_name']]
+
+        with open(TEST_INFO['dataset_file'], 'r') as input:
             data_from_file = json_loads(input.read())
             data_from_file.sort(key=lambda x: x['_id'])
 
