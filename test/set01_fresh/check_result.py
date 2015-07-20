@@ -7,39 +7,67 @@ sys.path.append(
 )
 
 import unittest
-import test_utils
 
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
+from test_utils import load_test_info, print_desc, print_msg, setup_dataset
 
 
-TEST_NAME = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
-TEST_INFO = test_utils.load_test_info(TEST_NAME)
-
-CLIENT_SRC  = MongoClient(TEST_INFO['mongo_uri_src'])
-CLIENT_DEST = MongoClient(TEST_INFO['mongo_uri_dest'])
-COLL_SRC    = CLIENT_SRC[TEST_INFO['db_name_src']][TEST_INFO['coll_name']]
-COLL_DEST   = CLIENT_DEST[TEST_INFO['db_name_src']][TEST_INFO['coll_name']]
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 ##############################################################################
 
 class TestFreshRun(unittest.TestCase):
-    def test_freshrun(self):
-        test_utils.print_desc('Checking result for {}'.format(TEST_NAME))
+    def setUp(self):
+        self.test_name   = os.path.basename(CURRENT_DIR)
+        self.test_info   = load_test_info(self.test_name)
+        self.client_src  = MongoClient(self.test_info['mongo_uri_src'])
+        self.client_dest = MongoClient(self.test_info['mongo_uri_dest'])
+        db_src           = self.client_src[self.test_info['db_name_src']]
+        db_dest          = self.client_dest[self.test_info['db_name_dest']]
 
-        with open(TEST_INFO['dataset_file'], 'r') as input:
+        self.coll_src    = db_src[self.test_info['coll_name']]
+        self.coll_dest   = db_dest[self.test_info['coll_name']]
+
+        setup_dataset(
+            uri=self.test_info['mongo_uri_src'],
+            db_name=self.test_info['db_name_src'],
+            coll_name=self.test_info['coll_name'],
+            dataset_file=os.path.join(CURRENT_DIR, 'data.json')
+        )
+
+    def tearDown(self):
+        print_msg("Dropping {} in source and destination".format(
+            self.test_info['coll_name']
+        ))
+        self.coll_src.drop()
+        self.coll_dest.drop()
+
+        print("Removing progress and log files")
+        os.chdir(CURRENT_DIR)
+        try:
+            for res in self.test_info['temp_res']:
+                os.remove(res)
+        except Exception:
+            pass
+
+        self.client_src.close()
+        self.client_dest.close()
+
+    def test_freshrun(self):
+        print_msg('Checking result for {}'.format(self.test_name))
+
+        with open(self.test_info['dataset_file'], 'r') as input:
             data_from_file = json_loads(input.read())
             data_from_file.sort(key=lambda x: x['_id'])
 
-        data_from_src  = list(COLL_SRC.find().sort('_id', 1))
-        data_from_dest = list(COLL_DEST.find().sort('_id', 1))
-
+        data_from_src  = list(self.coll_src.find().sort('_id', 1))
+        data_from_dest = list(self.coll_dest.find().sort('_id', 1))
+        
         self.assertEqual(data_from_file, data_from_src)
         self.assertEqual(data_from_file, data_from_dest)
 
 
 if __name__ == '__main__':
     unittest.main()
-    CLIENT_SRC.close()
-    CLIENT_DEST.close()
