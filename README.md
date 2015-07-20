@@ -76,3 +76,10 @@ already existed.
   500 documents with `date` field spreading across 10 days (50 documents/day).
   It then performs the backup 350 documents in the last 7 days to `log_click`
   in DB `adflex_test_backup`.
+
+## License
+
+This software is distributed under the terms of the MIT license.  See
+[`License`](./License) for further information.
+
+Copyright © 2015  Ha-Duong Nguyen
