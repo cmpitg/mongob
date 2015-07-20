@@ -42,40 +42,40 @@ already existed.
 
 ### Set 01 - Fresh run
 
-* Path: [`test/set01_fresh/`](./test/set01_fresh)
+* Path: [`test/fresh/`](./test/fresh)
 
-* Data set: [`test/set01_fresh/data.json`](./test/set01_fresh/data.json)
+* Data set: [`test/fresh/data.json`](./test/fresh/data.json)
 
-* This test sets up collection `log_traffic` in DB `adflex_test` with 101
-  documents, sorted by `ObjectId`.  It then performs the backup this
-  collection to `log_traffic` in DB `adflex_test_backup`.
+* This test sets up collection `test_random` with 101 documents, sorted by
+  `ObjectId`.  It then performs the backup this collection and checks if the
+  destination documents are the same as their source counterparts.
 
 ### Set 02 - Incremental backup using `ObjectId`
 
-* Path: [`test/set02_incremental_objectid/`](./test/set02_incremental_objectid)
+* Path: [`test/incremental_objectid/`](./test/incremental_objectid)
 
 * Data set:
-  [`test/set02_incremental_objectid/data.json`](./test/set02_incremental_objectid/data.json)
+  [`test/incremental_objectid/data.json`](./test/incremental_objectid/data.json)
 
 * Progress file:
-  [`test/set02_incremental_objectid/progress.json`](./test/set02_incremental_objectid/progress.json)
+  [`test/incremental_objectid/progress.json`](./test/incremental_objectid/progress.json)
 
-* This test sets up collection `log_traffic` in DB `adflex_test` with 101
-  documents, sorted by `ObjectId`.  It then performs the backup 98 documents,
-  starting from document with ID `555317f7d290053143db668b`, to `log_traffic`
-  in DB `adflex_test_backup`.
+* This test sets up collection `test_random` with 101 documents, sorted by
+  `ObjectId`.  It then performs the backup 98 documents, starting from
+  document with ID `555317f7d290053143db668b` and checks if the result is
+  correct.
 
-### Set 03 - Backup all recent data in 7 days
+### Set 03 - Backup all recent data in the last 7 days
 
-* Path: [`test/set03_7_recent_days/`](./test/set03_recent7_recent_days)
+* Path: [`test/last7_days/`](./test/last7_days)
 
 * Data set:
-  [`test/set03_recent7_recent_days/data.json`](./test/set03_recent7_recent_days/data.json)
+  [`test/last7_days/data.json`](./test/last7_days/data.json)
 
-* This test generates collection `log_click` in DB `adflex_test` consisting of
-  500 documents with `date` field spreading across 10 days (50 documents/day).
-  It then performs the backup 350 documents in the last 7 days to `log_click`
-  in DB `adflex_test_backup`.
+* This test generates collection `test_random` consisting of 500 documents
+  with `date` field spreading across 10 days (50 documents/day).  It then
+  performs the backup 350 documents in the last 7 days to `test_random` and
+  checks if the result is correct.
 
 ## License
 
