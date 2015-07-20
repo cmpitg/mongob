@@ -34,6 +34,20 @@ tools like virtualenv.
 
 ## Config file
 
+## Tasks
+
+```sh
+# Run test X
+invoke test --name=X
+
+# Run all tests
+invoke test_all
+```
+
+## Development guide
+
+The `tasks.py` invoke script automatically recognizes current tests.
+
 ## Test sets
 
 Note that all tests will create collections from scratch, thus **removing
