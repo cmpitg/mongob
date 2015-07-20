@@ -82,4 +82,4 @@ already existed.
 This software is distributed under the terms of the MIT license.  See
 [`License`](./License) for further information.
 
-Copyright © 2015  Ha-Duong Nguyen
+Copyright © 2015  Ha-Duong Nguyen (@cmpitg)
