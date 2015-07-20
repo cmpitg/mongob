@@ -5,6 +5,7 @@ from invoke import task, run
 
 
 CURRENT_DIR = os.path.dirname(__file__)
+TESTS_DIR   = os.path.join(CURRENT_DIR, 'tests')
 
 
 @task
@@ -21,10 +22,9 @@ def test_all():
     """
     Runs all test sets.
     """
-    test_dir = os.path.join(CURRENT_DIR, 'test')
 
-    for dir in os.listdir(test_dir):
-        if not os.path.isfile(os.path.join(test_dir, dir)) \
+    for dir in os.listdir(TESTS_DIR):
+        if not os.path.isfile(os.path.join(TESTS_DIR, dir)) \
            and not dir.startswith('_') \
            and not dir.startswith('.'):
             test(dir)
@@ -36,5 +36,5 @@ def test(name='fresh'):
     Tests Mongo backup with fresh DB.
     """
     print("===== Testing '{}' set ====".format(name))
-    run('test/{}/run_test.py'.format(name))
+    run('{}/{}/run_test.py'.format(TESTS_DIR, name))
     print('')

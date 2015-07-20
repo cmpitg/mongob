@@ -11,7 +11,7 @@ import unittest
 
 from pymongo import MongoClient
 from bson.json_util import loads as json_loads
-from test_utils import load_test_info, print_desc, print_msg, setup_dataset
+from utils import load_test_info, print_desc, print_msg, setup_dataset
 
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
