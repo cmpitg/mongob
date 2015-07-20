@@ -6,6 +6,7 @@ sys.path.append(
     os.path.join(os.path.dirname(__file__), "../")
 )
 
+import yaml
 import unittest
 
 from pymongo import MongoClient
@@ -28,8 +29,9 @@ class TestFreshRun(unittest.TestCase):
         db_src           = self.client_src[self.test_info['db_name_src']]
         db_dest          = self.client_dest[self.test_info['db_name_dest']]
 
-        self.coll_src    = db_src[self.test_info['coll_name']]
-        self.coll_dest   = db_dest[self.test_info['coll_name']]
+        self.test_info['coll_name'] = self.get_coll_name()
+        self.coll_src               = db_src[self.test_info['coll_name']]
+        self.coll_dest              = db_dest[self.test_info['coll_name']]
 
         setup_dataset(
             uri=self.test_info['mongo_uri_src'],
@@ -75,6 +77,14 @@ class TestFreshRun(unittest.TestCase):
         
         self.assertEqual(data_from_file, data_from_src)
         self.assertEqual(data_from_file, data_from_dest)
+
+
+    def get_coll_name(self):
+        """
+        Retrieves collection name by reading config.yaml.
+        """
+        with open(os.path.join(CURRENT_DIR, 'config.yaml'), 'r') as input:
+            return list(yaml.load(input)['collections'].keys())[0]
 
 
 if __name__ == '__main__':
