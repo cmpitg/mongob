@@ -5,8 +5,8 @@
 * Live-adjustable backup rate.
 
 * Incremental backup via:
-  - `ObjectId`$$$
-  - Field range, e.g. `date` between 2 values.
+  - `ObjectId`
+  - Field delta, e.g. last 7 days
 
 * Gracefully stop and resume via config file or via HTTP interface.
 
