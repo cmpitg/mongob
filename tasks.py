@@ -10,6 +10,7 @@ def setup():
     Prepares to run tests.
     """
     os.chdir(os.path.dirname(__file__))
+    print("Current directory: {}".format(os.path.dirname(__file__)))
 
 
 @task
@@ -28,6 +29,4 @@ def test_01():
     Tests Mongo backup with fresh DB.
     """
     print('=== Test set: Fresh backup ===')
-    os.chdir('test/set01_fresh/')
-
-    run('./run_test.py')
+    run('test/set01_fresh/run_test.py')
