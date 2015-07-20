@@ -15,17 +15,22 @@
 ## Requirements
 
 * Python 3
-* [PyMongo](http://api.mongodb.org/python/current/)
-* [PyYAML](http://pyyaml.org/wiki/PyYAMLDocumentation)
+* [PyMongo](http://api.mongodb.org/python/current/) - MongoDB driver for Python
+* [PyYAML](http://pyyaml.org/wiki/PyYAMLDocumentation) - YAML library for Python
+* [Invoke](http://www.pyinvoke.org/) - Python-based task runner
 
 It is recommended to use [virtualenv](https://virtualenv.pypa.io/en/latest/)
 with [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/)
-in both development and deployment environment.  After that, dependecies can
-be easily installed with:
+in both development and deployment environment.
+
+To install all dependencies:
 
 ```sh
-pip install pymongo PyYAML
+pip install -r requirements.txt
 ```
+
+Note that you might need to run the above command as root if you are not using
+tools like virtualenv.
 
 ## Config file
 
