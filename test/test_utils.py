@@ -23,7 +23,7 @@ def load_test_info(test_name):
         return yaml.load(input)
 
 
-# print(load_test_info('set01_fresh'))
+# print(load_test_info('fresh'))
 
 
 def print_desc(desc):
