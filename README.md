@@ -1,16 +1,16 @@
-# AdFlex MongoDB backup tool
+# Mongob - collection-based backup tool for MongoDB
 
 ## Features
 
-* Live-adjustable backup rate.
+* Adjustable backup rate.
+
+* Config file takes effect immediately.
 
 * Incremental backup via:
   - `ObjectId`
-  - Field delta, e.g. last 7 days
+  - Date-string delta, e.g. last 7 days
 
-* Gracefully stop and resume via config file or via HTTP interface.
-
-* Automatically read config file after each operation.
+* Gracefully stop and resume via config file.
 
 ## Requirements
 
@@ -30,17 +30,15 @@ pip install -r requirements.txt
 ```
 
 Note that you might need to run the above command as root if you are not using
-tools like virtualenv.
+virtualenv.
 
 ## Usage
-
-It's probably best to explain with examples:
 
 ```sh
 # Getting help
 mongo_backup --help
 
-# Running MongoBackup with config file: config.yaml, progress file:
+# Running Mongob with config file: config.yaml, progress file:
 # current_progress.yaml, and log file: mongo_backup.log
 mongo_backup
 
@@ -50,15 +48,15 @@ mongo_backup --config <path-to-config.yaml> \
     --log <path-to-log>
 ```
 
-Config file is automatically re-read and updated, i.e. changes to config file
-take effect immediately after the currently performing operation.
+Changes to config file take effect immediately after the currently performing
+operation.
 
-After each backup operation, the program records the last document backed up
+After each backup operation, the program records the last document backed-up
 into progress file.
 
 ### Config file
 
-Is a YAML file.  For example:
+YAML format.  E.g.
 
 ```yaml
 rate: 60000
@@ -74,24 +72,25 @@ collections:
     unit: days
 ```
 
-* `rate`: documents per second → number of documents the program tries
-  backing up per second
+* `rate`: documents per second
 
 * `stop`: flag, determines if the corresponding backup process should
-  gracefully stop immediately.  `stop` is either `true` or `false`
+  gracefully stop immediately.  `stop` is either `true` or `false`.
 
 * `db_source`:
   [MongoDB URI connection string](http://docs.mongodb.org/manual/reference/connection-string/)
   of the source database
 
-* `db_destination`: MongoDB URI connection string of the destination database
+* `db_destination`: Either a MongoDB URI connection string of the destination
+  database (`mongodb://`) or path to the backup file (`file://` or no
+  protocol).  In the latter case, the backup is a Gzip-ed JSON file.
 
 * `collections`: an associative array with collection names as keys and backup
-  methods (associative array) as values.  Currently, this program supports 2
-  incremental backup methods:
+  methods as values.  Currently, this program supports 2 incremental backup
+  methods:
 
   - By [ObjectId](http://docs.mongodb.org/manual/reference/object-id/),
-  `method: object_id`.  Whet the program starts, it reads progress file and
+  `method: object_id`.  When Mongob starts, it reads the progress file and
   starts backing up from the document whose `ObjectId` is greater than
   `ObjectId` in the progress file.
 
@@ -104,11 +103,10 @@ collections:
     ```
 
     `unit` and `value` depend on what you have in your database.  `unit` must
-    be a `YY-MM-DD` String field in the database, representing date/time.
-    `value` is a number, representing the delta value, including the value.
+    be a `YYYY-MM-DD` String field, representing date/time.  `value` is a
+    number, representing the delta value, including the value.
 
-    E.g. the following associative array makes the backup program find all
-    documents in the last 10 days.
+    E.g. to backup all documents in `test_random_date` in the last 10 days:
 
     ```Yaml
     test_random_date:
@@ -119,18 +117,20 @@ collections:
 
 ### Progress file
 
-Is a YAML file, containing an associative array, representing ID of the last
+YAML format, containing an associative array representing `_id` of the last
 backed up document in one collection.  E.g.
 
 ```yaml
 test_random: 555317f7d290053143db668b
 ```
 
-If `method` of `test_random` in config file is `object_id`, MongoBackup would
-start backup all documents whose `_id` are greater than
-`555317f7d290053143db668b`.
+If `method` of `test_random` in config file is `object_id`, Mongob would
+backup all documents whose `_id` are greater than `555317f7d290053143db668b`.
+Otherwise, this file has no effect on the backup process.
 
-## Tasks
+## Development guide
+
+### Tasks
 
 ```sh
 # Run test X
@@ -140,15 +140,13 @@ invoke test --name=X
 invoke test_all
 ```
 
-## Development guide
-
-## Test sets
+### Tests
 
 Note that all tests will create collections from scratch, thus **removing
 existing collections with the same name in the corresponding databases** if
-already existed.
+they have already existed.
 
-### Set 01 - Fresh run
+### 01 - Fresh run
 
 * Path: [`test/fresh/`](./test/fresh)
 
@@ -156,19 +154,20 @@ already existed.
 
 * Full collection backup, 101 documents.
 
-### Set 02 - Incremental backup using `ObjectId`
+### 02 - Incremental backup using `ObjectId`
 
 * Path: [`test/incremental_objectid/`](./test/incremental_objectid)
 
-* Data set:
+* Data:
   [`test/incremental_objectid/data.json`](./test/incremental_objectid/data.json)
 
 * Progress file:
   [`test/incremental_objectid/progress.json`](./test/incremental_objectid/progress.json)
 
-* Backup from document with `_id 555317f7d290053143db668b`, 97/101 documents.
+* Backup all documents with `_id ≥ ObjectId(555317f7d290053143db668b)`, 97/101
+  documents.
 
-### Set 03 - Backup all recent data in the last 7 days
+### 03 - Backup all data in the last 7 days
 
 * Path: [`test/last7_days/`](./test/last7_days)
 
@@ -176,8 +175,8 @@ already existed.
   [`test/last7_days/data.json`](./test/last7_days/data.json)
 
 * Generates `test_random` with 500 documents and `date` field spreading across
-  last 10 days (50 documents/day).  Then backs up 350 documents in the last 7
-  days.
+  last 10 days (50 documents/day).  Then performs backup 350 documents in the
+  last 7 days.
 
 ## License
 
