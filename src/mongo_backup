@@ -13,6 +13,7 @@ import argparse
 
 from datetime import datetime as dt
 from datetime import timedelta
+from os.path import basename
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -335,19 +336,25 @@ def read_cmd_args():
     )
     parser.add_argument(
         "--config",
-        help='specify YAML config file, default: {}'.format(CONFIG_FILE),
+        help='specify YAML config file, default: {}'.format(
+            basename(CONFIG_FILE)
+        ),
         default=CONFIG_FILE,
         type=str
     )
     parser.add_argument(
         '--progress-file',
-        help='specify YAML progress file, default: {}'.format(PROGRESS_FILE),
+        help='specify YAML progress file, default: {}'.format(
+            basename(PROGRESS_FILE)
+        ),
         default=PROGRESS_FILE,
         type=str
     )
     parser.add_argument(
         '--log',
-        help='specify log file, default: {}'.format(LOG_FILE),
+        help='specify log file, default: {}'.format(
+            basename(LOG_FILE)
+        ),
         default=LOG_FILE,
         type=str
     )
