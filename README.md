@@ -60,9 +60,7 @@ already existed.
 
 * Data set: [`test/fresh/data.json`](./test/fresh/data.json)
 
-* This test sets up collection `test_random` with 101 documents, sorted by
-  `ObjectId`.  It then performs the backup this collection and checks if the
-  destination documents are the same as their source counterparts.
+* Full collection backup, 101 documents.
 
 ### Set 02 - Incremental backup using `ObjectId`
 
@@ -74,10 +72,7 @@ already existed.
 * Progress file:
   [`test/incremental_objectid/progress.json`](./test/incremental_objectid/progress.json)
 
-* This test sets up collection `test_random` with 101 documents, sorted by
-  `ObjectId`.  It then performs the backup 98 documents, starting from
-  document with ID `555317f7d290053143db668b` and checks if the result is
-  correct.
+* Backup from document with `_id 555317f7d290053143db668b`, 97/101 documents.
 
 ### Set 03 - Backup all recent data in the last 7 days
 
@@ -86,10 +81,9 @@ already existed.
 * Data set:
   [`test/last7_days/data.json`](./test/last7_days/data.json)
 
-* This test generates collection `test_random` consisting of 500 documents
-  with `date` field spreading across 10 days (50 documents/day).  It then
-  performs the backup 350 documents in the last 7 days to `test_random` and
-  checks if the result is correct.
+* Generates `test_random` with 500 documents and `date` field spreading across
+  last 10 days (50 documents/day).  Then backs up 350 documents in the last 7
+  days.
 
 ## License
 
