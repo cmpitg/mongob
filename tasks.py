@@ -22,7 +22,6 @@ def test_all():
     """
     Runs all test sets.
     """
-
     for dir in os.listdir(TESTS_DIR):
         if not os.path.isfile(os.path.join(TESTS_DIR, dir)) \
            and not dir.startswith('_') \
@@ -35,6 +34,6 @@ def test(name='fresh'):
     """
     Tests Mongo backup with fresh DB.
     """
-    print("===== Testing '{}' set ====".format(name))
+    print("===== Testing '{}' set =====".format(name))
     run('{}/{}/run_test.py'.format(TESTS_DIR, name))
     print('')
