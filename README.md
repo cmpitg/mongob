@@ -40,10 +40,10 @@ mongo_backup --help
 
 # Running Mongob with config file: config.yaml, progress file:
 # current_progress.yaml, and log file: mongo_backup.log
-mongo_backup
+mongob
 
 # Specifying necessary files
-mongo_backup --config <path-to-config.yaml> \
+mongob --config <path-to-config.yaml> \
     --progress-file <path-to-progress.yaml> \
     --log <path-to-log>
 ```

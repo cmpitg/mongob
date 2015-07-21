@@ -61,7 +61,7 @@ class TestFreshRun(unittest.TestCase):
     def test_freshrun(self):
         print_msg('Running {} test'.format(self.test_name))
         os.system(
-            '../../src/mongo_backup --config config.yaml'
+            '../../src/mongob --config config.yaml'
             + ' --progress-file current_progress.yaml'
             + ' --log backup.log'
         )
