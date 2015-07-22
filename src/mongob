@@ -108,7 +108,7 @@ def close_connections():
     Gracefully closes all connections.
     """
     for conn in CONNECTIONS:
-        conn.close()
+        backend.close(conn)
 
 
 def check_stop_flag(config, logger=LOGGER):
