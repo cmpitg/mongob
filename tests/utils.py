@@ -10,18 +10,43 @@ from pymongo import MongoClient
 from bson.json_util import loads as json_loads
 
 
+CURRENT_DIR = os.path.dirname(__file__)
+
+
+def parse_mongo_uri(uri):
+    """
+    Parses and returns MongoDB origin and its corresponding DB.  If the URI
+    indicates a file, return the path to the file as both values.
+    """
+    if uri.startswith('mongodb://'):
+        db_name_pos = uri.rfind("/") + 1
+        db_name     = uri[db_name_pos:]
+        mongo_src   = uri[:db_name_pos]
+        return mongo_src, db_name
+    else:
+        return uri, uri
+
+
 def load_test_info(test_name):
     """
     Loads and returns the test info YAML file and returns a Python dictionary.
     """
-    test_info_path = os.path.join(
-        os.path.dirname(__file__),
-        test_name,
-        "test_info.yaml"
-    )
-    with open(test_info_path, 'r') as input:
-        return yaml.load(input)
+    test_info_path  = os.path.join(CURRENT_DIR, test_name, "test_info.yaml")
+    config_path     = os.path.join(CURRENT_DIR, test_name, "config.yaml")
 
+    with open(test_info_path, 'r') as input:
+        test_info = yaml.load(input)
+    with open(config_path, 'r') as input:
+        config    = yaml.load(input)
+
+    test_info['mongo_src'], test_info['db_src'] = parse_mongo_uri(
+        config['db_source']
+    )
+    test_info['mongo_dest'], test_info['db_dest'] = parse_mongo_uri(
+        config['db_destination']
+    )
+
+    return test_info
 
 # print(load_test_info('fresh'))
 
