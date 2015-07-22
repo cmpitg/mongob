@@ -14,7 +14,7 @@ def setup():
     Prepares to run tests.
     """
     os.chdir(CURRENT_DIR)
-    print("Current directory: {}".format(os.path.dirname(__file__)))
+    # print("Current directory: {}".format(os.path.dirname(__file__)))
 
 
 @task(pre=[setup])
@@ -22,11 +22,9 @@ def test_all():
     """
     Runs all test sets.
     """
-    for dir in os.listdir(TESTS_DIR):
-        if not os.path.isfile(os.path.join(TESTS_DIR, dir)) \
-           and not dir.startswith('_') \
-           and not dir.startswith('.'):
-            test(dir)
+    for name in test_names():
+        dir = os.path.join(TEST_DIR, name)
+        test(dir)
 
 
 @task(pre=[setup])
@@ -37,3 +35,22 @@ def test(name='fresh'):
     print("===== Testing '{}' set =====".format(name))
     run('{}/{}/run_test.py'.format(TESTS_DIR, name))
     print('')
+
+
+@task(pre=[setup])
+def list_test():
+    """
+    Displays all test names.
+    """
+    for name in test_names():
+        print(name)
+
+
+def test_names():
+    """
+    Retrieves all test names.
+    """
+    return [dir for dir in os.listdir(TESTS_DIR)
+            if not os.path.isfile(os.path.join(TESTS_DIR, dir)) \
+            and not dir.startswith('_') \
+            and not dir.startswith('.')]
