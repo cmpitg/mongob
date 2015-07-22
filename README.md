@@ -18,6 +18,8 @@
 * [PyMongo](http://api.mongodb.org/python/current/) - MongoDB driver for Python
 * [PyYAML](http://pyyaml.org/wiki/PyYAMLDocumentation) - YAML library for Python
 * [Invoke](http://www.pyinvoke.org/) - Python-based task runner
+* [multipledispatch](https://github.com/mrocklin/multipledispatch/) - Multiple
+  dispatch for Python
 
 It is recommended to use [virtualenv](https://virtualenv.pypa.io/en/latest/)
 with [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/)

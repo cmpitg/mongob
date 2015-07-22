@@ -23,18 +23,18 @@ class TestFreshRun(unittest.TestCase):
     def setUp(self):
         self.test_name   = os.path.basename(CURRENT_DIR)
         self.test_info   = load_test_info(self.test_name)
-        self.client_src  = MongoClient(self.test_info['mongo_uri_src'])
-        self.client_dest = MongoClient(self.test_info['mongo_uri_dest'])
-        db_src           = self.client_src[self.test_info['db_name_src']]
-        db_dest          = self.client_dest[self.test_info['db_name_dest']]
+        self.client_src  = MongoClient(self.test_info['mongo_src'])
+        self.client_dest = MongoClient(self.test_info['mongo_dest'])
+        db_src           = self.client_src[self.test_info['db_src']]
+        db_dest          = self.client_dest[self.test_info['db_dest']]
 
         self.test_info['coll_name'] = self.get_coll_name()
         self.coll_src               = db_src[self.test_info['coll_name']]
         self.coll_dest              = db_dest[self.test_info['coll_name']]
 
         setup_dataset(
-            uri=self.test_info['mongo_uri_src'],
-            db_name=self.test_info['db_name_src'],
+            uri=self.test_info['mongo_src'],
+            db_name=self.test_info['db_src'],
             coll_name=self.test_info['coll_name'],
             dataset_file=os.path.join(CURRENT_DIR, 'data.json')
         )

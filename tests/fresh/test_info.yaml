@@ -1,7 +1,3 @@
-mongo_uri_src: mongodb://localhost/
-mongo_uri_dest: mongodb://localhost/
-db_name_src: test_db
-db_name_dest: test_db_backup
 dataset_file: data.json
 temp_res:
   - current_progress.yaml
