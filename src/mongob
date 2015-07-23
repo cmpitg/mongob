@@ -12,11 +12,12 @@ import yaml
 import argparse
 import backend
 
-from datetime import datetime as dt
-from datetime import timedelta
-from os.path import basename
-from pymongo import MongoClient
+from datetime      import datetime as dt
+from datetime      import timedelta
+from os.path       import basename
+from pymongo       import MongoClient
 from bson.objectid import ObjectId
+from backend       import get_db
 
 
 CONFIG_FILE    = os.path.join(os.path.dirname(__file__), 'config.yaml')
@@ -251,8 +252,8 @@ def backup_collection(coll_src,
         "backing up %s (%s docs) ⇒ %s (%s docs)",
         coll_src.name,
         coll_src.count(),
-        coll_dest.name,
-        coll_dest.count()
+        backend.dest_name(coll_dest),
+        backend.dest_size(coll_dest)
     )
     logger.info('rate: %s doc(s)/sec', config['rate'])
 
@@ -268,16 +269,16 @@ def backup_collection(coll_src,
         logger.info(
             'bulk inserting: %s → %s',
             len(current_docs),
-            coll_dest.name
+            backend.dest_name(coll_dest)
         )
 
         try:
-            coll_dest.insert_many(current_docs, ordered=False)
+            backend.insert_docs(coll_dest, current_docs)
         except Exception as e:
             pass
 
         log_last_doc(
-            coll_name=coll_dest.name,
+            coll_name=backend.dest_name(coll_dest),
             doc_id=str(current_docs[-1]['_id'])
         )
 
@@ -346,12 +347,14 @@ def set_global_params(args):
 
 
 def main():
+    global CONNECTIONS
+
     set_global_params(read_cmd_args())
 
-    config   = read_config()
-    db_src   = get_db(config['db_source'])
-    db_dest  = get_db(config['db_destination'])
-    colls    = config['collections']
+    config               = read_config()
+    CONNECTIONS, db_src  = get_db(config['db_source'], CONNECTIONS)
+    CONNECTIONS, db_dest = get_db(config['db_destination'], CONNECTIONS)
+    colls                = config['collections']
 
     for name, condition in colls.items():
         backup_collection(
