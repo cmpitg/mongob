@@ -216,16 +216,6 @@ def find_docs_to_update(coll,
         return coll.find({ 'date': { "$gte": start_date } })
         
 
-# adb = MongoClient('mongodb://localhost/)
-# find_docs_to_update(adb.log_traffic).count()
-# log_last_doc('log_traffic', '555317f7d290053143db66b2')
-# find_docs_to_update(adb.log_traffic, { 'method': 'object_id' }).count()
-# => 58
-# log_last_doc('log_traffic', '555317f7d290053143db668a')
-# find_docs_to_update(adb.log_traffic, { 'method': 'object_id' }).count()
-# => 98
-
-
 def log_last_doc(coll_name, doc_id, logger=None, path=None):
     """
     Logs last document inserted into `path' as YAML.
@@ -304,10 +294,6 @@ def backup_collection(coll_src,
         insert_to_dest()
 
 
-# adb = MongoClient('mongodb://localhost/)
-# backup_collection(adb.log_traffic, adb.log_traffic_2, config_path='/m/src/adflex/db_backup/src/config.yaml')
-
-
 def read_cmd_args():
     """
     Sets and reads command line arguments.
@@ -379,10 +365,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-#
-# use test_db;
-# db.log_traffic.count();
-# db.log_traffic.find({ _id: { '$gte': ObjectId('555317f7d290053143db668b') } }).count();
-#
