@@ -9,9 +9,14 @@ sys.path.append(
 import yaml
 import unittest
 
-from pymongo import MongoClient
+from pymongo        import MongoClient
 from bson.json_util import loads as json_loads
-from utils import load_test_info, print_desc, print_msg, setup_dataset
+
+from utils import load_test_info
+from utils import print_desc
+from utils import print_msg
+from utils import setup_dataset
+from utils import remove_res
 
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,44 +30,43 @@ class TestFreshRun(unittest.TestCase):
 
         self.test_name   = os.path.basename(CURRENT_DIR)
         self.test_info   = load_test_info(self.test_name)
-        self.client_src  = MongoClient(self.test_info['mongo_src'])
-        self.client_dest = MongoClient(self.test_info['mongo_dest'])
-        db_src           = self.client_src[self.test_info['db_src']]
-        db_dest          = self.client_dest[self.test_info['db_dest']]
 
-        self.test_info['coll_name'] = self.get_coll_name()
-        self.coll_src               = db_src[self.test_info['coll_name']]
-        self.coll_dest              = db_dest[self.test_info['coll_name']]
+        self.coll_name   = self.test_info['coll_names'][0]
+
+        self.conn_src    = self.test_info['conn_src']
+        self.conn_dest   = self.test_info['conn_dest']
+        self.db_src      = self.test_info['db_src']
+        self.db_dest     = self.test_info['db_dest']
+        self.coll_src    = self.db_src[self.coll_name]
+        self.coll_dest   = self.db_dest[self.coll_name]
+
+        remove_res(self.test_info['temp_res'])
 
         setup_dataset(
-            uri=self.test_info['mongo_src'],
-            db_name=self.test_info['db_src'],
-            coll_name=self.test_info['coll_name'],
+            coll=self.coll_src,
             dataset_file=os.path.join(CURRENT_DIR, 'data.json')
         )
         
         print_msg('Setting up progress file')
         with open('current_progress.yaml', 'w') as output:
-            output.write("test_random: 555317f7d290053143db668b\n")
+            output.write("{}: 555317f7d290053143db668b\n".format(
+                self.coll_name
+            ))
 
     def tearDown(self):
         print_msg("Dropping {} in source and destination".format(
-            self.test_info['coll_name']
+            self.coll_name
         ))
         self.coll_src.drop()
         self.coll_dest.drop()
+        self.conn_src.close()
+        self.conn_dest.close()
 
-        print_msg("Removing temporary log and resource files")
-        try:
-            for res in self.test_info['temp_res']:
-                os.remove(res)
-        except Exception:
-            pass
+        remove_res(self.test_info['temp_res'])
 
-        self.client_src.close()
-        self.client_dest.close()
+    def test_incremental_objectid(self):
+        self.coll_dest.drop()
 
-    def test_freshrun(self):
         print_msg('Running {} test'.format(self.test_name))
         os.system(
             '../../src/mongob --config config.yaml'
@@ -77,17 +81,11 @@ class TestFreshRun(unittest.TestCase):
 
         data_from_src  = list(self.coll_src.find().sort('_id', 1))
         data_from_dest = list(self.coll_dest.find().sort('_id', 1))
-        
+
+        print("Count: {}".format(len(data_from_dest)))
+
         self.assertEqual(data_from_file, data_from_src)
         self.assertEqual(data_from_file[4:], data_from_dest)
-
-
-    def get_coll_name(self):
-        """
-        Retrieves collection name by reading config.yaml.
-        """
-        with open(os.path.join(CURRENT_DIR, 'config.yaml'), 'r') as input:
-            return list(yaml.load(input)['collections'].keys())[0]
 
 
 if __name__ == '__main__':

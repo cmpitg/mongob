@@ -94,5 +94,19 @@ def setup_dataset(coll, dataset_file):
     """
     print_msg("Loading dataset for {}".format(coll.name))
 
+    coll.drop()
+
     with open(dataset_file, 'r') as input:
         coll.insert_many(json_loads(input.read()))
+
+
+def remove_res(res):
+    """
+    Removes temporary and resource files.
+    """
+    print_msg("Removing temporary log and resource files")
+    for res in res:
+        try:
+            os.remove(res)
+        except Exception:
+            pass
