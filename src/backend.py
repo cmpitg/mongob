@@ -48,6 +48,24 @@ def get_db(uri, connections):
 
 ##############################################################################
 
+@dispatch(str, str)
+def get_collection(db, name):
+    """
+    Retrieves collection from a MongoDB database.
+    """
+    return db
+
+
+@dispatch(Database, str)
+def get_collection(db, name):
+    """
+    Retrieves collection from a MongoDB database.
+    """
+    return db[name]
+
+
+##############################################################################
+
 @dispatch(str)
 def close(path):
     pass

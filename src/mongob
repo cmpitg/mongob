@@ -358,8 +358,8 @@ def main():
 
     for name, condition in colls.items():
         backup_collection(
-            coll_src=db_src[name],
-            coll_dest=db_dest[name],
+            coll_src=get_collection(db_src, name),
+            coll_dest=get_collection(db_dest, name),
             condition=condition
         )
 
