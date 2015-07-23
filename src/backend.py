@@ -104,8 +104,11 @@ def dest_size(path):
     """
     Retrieves size of backed up data.
     """
-    with open(path, 'w') as input:
-        return json_loads(input.read())
+    try:
+        with bz2.open(path, 'rt') as input:
+            return json_loads(input.read())
+    except Exception:
+        return 0
 
 
 @dispatch(Collection)
