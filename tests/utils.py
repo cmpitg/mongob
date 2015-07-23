@@ -24,6 +24,8 @@ def parse_mongo_uri(uri):
         mongo_src   = uri[:db_name_pos]
         return mongo_src, db_name
     else:
+        if uri.startswith('file://'):
+            uri = uri[len('file://'):]
         return uri, uri
 
 
@@ -56,12 +58,13 @@ def load_test_info(test_name):
     with open(config_path, 'r') as input:
         config    = yaml.load(input)
 
-    test_info['mongo_src'], test_info['db_src'] = parse_mongo_uri(
+    test_info['conn_src'], test_info['db_src']   = init_data_src(
         config['db_source']
     )
-    test_info['mongo_dest'], test_info['db_dest'] = parse_mongo_uri(
+    test_info['conn_dest'], test_info['db_dest'] = init_data_src(
         config['db_destination']
     )
+    test_info['coll_names'] = list(config['collections'].keys())
 
     return test_info
 
@@ -84,17 +87,12 @@ def print_msg(msg):
     sys.stdout.flush()
 
 
-def setup_dataset(uri, db_name, coll_name, dataset_file):
+def setup_dataset(coll, dataset_file):
     """
     Setting up data set for a test by dropping the existing collection then
     loading data from a JSON file.
     """
-    print_msg("Loading dataset for {}".format(coll_name))
+    print_msg("Loading dataset for {}".format(coll.name))
 
-    with MongoClient(uri) as client:
-        db     = client[db_name]
-        coll   = db[coll_name]
-        coll.drop()
-
-        with open(dataset_file, 'r') as input:
-            coll.insert_many(json_loads(input.read()))
+    with open(dataset_file, 'r') as input:
+        coll.insert_many(json_loads(input.read()))
