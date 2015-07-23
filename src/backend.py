@@ -1,5 +1,6 @@
 import os
-import gzip
+import bz2
+import sys
 
 from multipledispatch import dispatch
 from bson.json_util import loads as json_loads
@@ -95,3 +96,55 @@ def dest_size(coll):
     Retrieves size of backed up data.
     """
     return coll.count()
+
+##############################################################################
+
+@dispatch(str, list)
+def insert_docs(path, docs):
+    """
+    Inserts all docs into a destination file.  This function makes no attempt
+    at making sure there are no duplicated docs.
+    """
+    # Not used:
+    # As we write one list each time we open destination while the desire output
+    # should be a single list, we need to do the list concatenation manually by
+    # removing the closing square bracket ("]") and add a comma to separate the
+    # currently inserted items.
+
+    # Destination file is created for the first time
+    if not os.path.isfile(path):
+        with bz2.open(path, 'wt') as output:
+            output.write(json_dumps(docs))
+    else:
+        # with bz2.open(path, 'r') as output:
+        #     # Remove last ]
+        #     output.seek(-1, os.SEEK_END)
+        #     while output.peek(1)[:1] != b']' and output.tell() > 0:
+        #         print(output.peek(1)[:1])
+        #         output.seek(-1, os.SEEK_CUR)
+        #     output.truncate()
+
+        #     # Write , as list separator
+        #     output.write(b', ')
+
+        #     # Now, write docs without the beginning [
+        #     output.write(json_dumps(docs)[1:].encode('utf-8'))
+
+        with bz2.open(path, 'rt') as input:
+            current_docs = json_loads(input.read())
+        current_docs.extend(docs)
+
+        with bz2.open(path, 'wt') as output:
+            output.write(json_dumps(current_docs))
+
+
+# insert_docs('/tmp/world_hello.txt.bz2', [{ 'a': 'hello', 'b': 'world' }])
+# sys.exit(0)
+
+
+@dispatch(Collection, list)
+def insert_docs(coll, docs):
+    """
+    Inserts all docs into a MongoDB collection.
+    """
+    coll.insert_many(docs, ordered=False)
