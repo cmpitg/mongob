@@ -12,12 +12,14 @@ import yaml
 import argparse
 import backend
 
+from pymongo       import MongoClient
+from bson.objectid import ObjectId
+
 from datetime      import datetime as dt
 from datetime      import timedelta
 from os.path       import basename
-from pymongo       import MongoClient
-from bson.objectid import ObjectId
 from backend       import get_db
+from backend       import get_collection
 
 
 CONFIG_FILE    = os.path.join(os.path.dirname(__file__), 'config.yaml')
