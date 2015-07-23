@@ -82,8 +82,6 @@ class TestFreshRun(unittest.TestCase):
         data_from_src  = list(self.coll_src.find().sort('_id', 1))
         data_from_dest = list(self.coll_dest.find().sort('_id', 1))
 
-        print("Count: {}".format(len(data_from_dest)))
-
         self.assertEqual(data_from_file, data_from_src)
         self.assertEqual(data_from_file[4:], data_from_dest)
 
