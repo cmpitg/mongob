@@ -138,10 +138,6 @@ def insert_docs(path, docs):
             output.write(json_dumps(current_docs))
 
 
-# insert_docs('/tmp/world_hello.txt.bz2', [{ 'a': 'hello', 'b': 'world' }])
-# sys.exit(0)
-
-
 @dispatch(Collection, list)
 def insert_docs(coll, docs):
     """
