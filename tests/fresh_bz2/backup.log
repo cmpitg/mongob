@@ -1,0 +1,4 @@
+2015-07-23 15:38:41,354 : backing up test_random (101 docs) ⇒ test_random.json.bz2 (0 docs)
+2015-07-23 15:38:41,355 : rate: 60000 doc(s)/sec
+2015-07-23 15:38:41,356 : bulk inserting: 101 → test_random.json.bz2
+2015-07-23 15:38:41,363 : last document ID: 555317f7d290053143db66ae in test_random.json.bz2

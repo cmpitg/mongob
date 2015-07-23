@@ -1,0 +1,7 @@
+rate: 60000
+stop: false
+collections:
+  test_random:
+    method: object_id
+db_source: mongodb://localhost/test_db
+db_destination: test_random.json.bz2
