@@ -35,6 +35,11 @@ def get_db(uri, connections):
     return connections, db
 
 
+# print(get_db("mongodb://localhost/hello_world", []))
+# print(get_db("file:///tmp/hello_world.txt",     []))
+# print(get_db("/tmp/hi_hi.txt",                  []))
+
+
 
 @dispatch(MongoClient)
 def close(f):
