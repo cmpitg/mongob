@@ -308,26 +308,6 @@ def backup_collection(coll_src,
 # backup_collection(adb.log_traffic, adb.log_traffic_2, config_path='/m/src/adflex/db_backup/src/config.yaml')
 
 
-def get_db(conn_str):
-    """
-    Retrieves a DB from conn_str.  conn_str is of the following format
-    mongodb://[username][[:[password]]@]<host>/<db_name>.
-    """
-    global CONNECTIONS
-
-    db_name_pos = conn_str.rfind("/") + 1
-    db_name     = conn_str[db_name_pos:]
-    client      = MongoClient(conn_str)
-
-    try:
-        CONNECTIONS.index(client)
-        CONNECTIONS.append(client)
-    except Exception:
-        pass
-
-    return client[db_name]
-
-
 def read_cmd_args():
     """
     Sets and reads command line arguments.
