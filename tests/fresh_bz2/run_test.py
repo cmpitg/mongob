@@ -53,7 +53,7 @@ class TestFreshRun(unittest.TestCase):
         self.coll_src.drop()
         self.conn_src.close()
 
-        # remove_res(self.test_info['temp_res'])
+        remove_res(self.test_info['temp_res'])
 
     def test_freshbz2(self):
         print_msg('Running {} test'.format(self.test_name))

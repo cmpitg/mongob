@@ -23,8 +23,7 @@ def test_all():
     Runs all test sets.
     """
     for name in test_names():
-        dir = os.path.join(TEST_DIR, name)
-        test(dir)
+        test(name=name)
 
 
 @task(pre=[setup])
