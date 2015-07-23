@@ -27,6 +27,23 @@ def parse_mongo_uri(uri):
         return uri, uri
 
 
+def init_data_src(uri):
+    """
+    Parses and initializes data source from URI.  URI follows one of the formats:
+    mongodb://[username][@[password]:]<host>/<db>, or
+    file://<path>, or
+    <path>
+    """
+    conn_str, db_str = parse_mongo_uri(uri)
+
+    if conn_str != db_str:
+        conn = MongoClient(conn_str)
+        db   = conn[db_str]
+        return conn, db
+    else:
+        return conn_str, db_str
+
+
 def load_test_info(test_name):
     """
     Loads and returns the test info YAML file and returns a Python dictionary.
