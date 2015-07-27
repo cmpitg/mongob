@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#
+# Copyright © 2015  Ha-Duong Nguyen <NOTcmpitgATgmailDOTcom>
+#
+# This file is distributed under the terms of the MIT license.
+#
 
 import sys
 import os

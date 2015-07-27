@@ -1,3 +1,9 @@
+#
+# Copyright © 2015  Ha-Duong Nguyen <NOTcmpitgATgmailDOTcom>
+#
+# This file is distributed under the terms of the MIT license.
+#
+
 import os
 import sys
 
