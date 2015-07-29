@@ -170,6 +170,15 @@ they have already existed.
 * Full collection backup, 101 documents, Bz2-compressed file as backup
   destination.
 
+### Fresh run with `remove_after_backup`
+
+* Path: [`test/fresh_remove_after_backup/`](./test/fresh_remove_after_backup)
+
+* Data set:
+  [`test/fresh_remove_after_backup/data.json`](./test/fresh_remove_after_backup/data.json)
+
+* Full collection backup, 101 documents, documents are removed after backup
+  completes.
 
 ### Incremental backup using `ObjectId`
 
