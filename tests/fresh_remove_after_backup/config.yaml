@@ -1,0 +1,8 @@
+rate: 10000
+stop: false
+collections:
+  test_random:
+    method: object_id
+    remove_after_backup: true
+db_source: mongodb://localhost/test_db
+db_destination: mongodb://localhost/test_db_backup
