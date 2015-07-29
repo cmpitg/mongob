@@ -68,6 +68,7 @@ db_destination: mongodb://localhost/test_db_backup
 collections:
   test_random:
     method: object_id
+    remove_after_backup: false
   test_random_date:
     method: date_delta
     value: -10
@@ -116,6 +117,10 @@ collections:
       value: -10
       unit: days
     ```
+
+* `remove_after_backup` determines whether or not the newly backed up
+  documents are removed from the source collection.  By default,
+  `remove_after_backup` is `false` if not exists.
 
 ### Progress file
 
