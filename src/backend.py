@@ -30,9 +30,14 @@ def get_db(uri, connections):
     """
 
     if uri.startswith('mongodb://'):
-        db_name_pos = uri.rfind("/") + 1
-        client      = MongoClient(uri[:db_name_pos])
-        db          = client[uri[db_name_pos:]]
+        if uri.find('?') > -1:
+            uri_without_auth = uri[:uri.find('?')]
+        else:
+            uri_without_auth = uri
+
+        db_name_pos = uri_without_auth.rfind("/") + 1
+        client      = MongoClient(uri)
+        db          = client[uri_without_auth[db_name_pos:]]
     else:
         if uri.startswith("file://"):
             uri = uri[len("file://"):]
@@ -170,4 +175,4 @@ def insert_docs(coll, docs):
     """
     Inserts all docs into a MongoDB collection.
     """
-    coll.insert_many(docs, ordered=False)
+    return coll.insert_many(docs, ordered=False)
