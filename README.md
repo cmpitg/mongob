@@ -161,6 +161,15 @@ they have already existed.
 
 * Full collection backup, 101 documents.
 
+### Fresh run Bz2
+
+* Path: [`test/fresh_bz2/`](./test/fresh_bz2)
+
+* Data set: [`test/fresh_bz2/data.json`](./test/fresh_bz2/data.json)
+
+* Full collection backup, 101 documents, Bz2-compressed file as backup
+  destination.
+
 
 ### Incremental backup using `ObjectId`
 
