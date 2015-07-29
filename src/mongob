@@ -211,10 +211,10 @@ def find_docs_to_update(coll,
             start_id = yaml.load(input).get(name, '')
 
         if start_id == '':
-            return coll.find()
+            return coll.find().sort('_id')
         else:
             logger.info('starting from ObjectId: %s', start_id)
-            return coll.find({ "_id": { "$gt": ObjectId(start_id) }})
+            return coll.find({ "_id": { "$gt": ObjectId(start_id) }}).sort('_id')
 
     elif method == 'date_delta':
         # Find all documents having 'date' field ≥ now() - delta
