@@ -249,12 +249,17 @@ def backup_collection(coll_src,
                       coll_dest,
                       condition=None,
                       config_path=None,
+                      remove_after_backup=None,
                       logger=None):
     """
     Backups collection from coll_src to coll_dest with a pre-defined search
     condition.
     """
     logger = logger or LOGGER
+
+    if remove_after_backup is None:
+        remove_after_backup = False
+
     config = read_config(path=config_path)
     logger.info(
         "backing up %s (%s docs) ⇒ %s (%s docs)",
@@ -368,7 +373,8 @@ def main():
         backup_collection(
             coll_src=get_collection(db_src, name),
             coll_dest=get_collection(db_dest, name),
-            condition=condition
+            condition=condition,
+            remove_after_backup=condition.get('remove_after_backup', False)
         )
 
     close_connections()
