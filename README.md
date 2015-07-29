@@ -153,7 +153,7 @@ Note that all tests will create collections from scratch, thus **removing
 existing collections with the same name in the corresponding databases** if
 they have already existed.
 
-### 01 - Fresh run
+### Fresh run
 
 * Path: [`test/fresh/`](./test/fresh)
 
@@ -161,7 +161,8 @@ they have already existed.
 
 * Full collection backup, 101 documents.
 
-### 02 - Incremental backup using `ObjectId`
+
+### Incremental backup using `ObjectId`
 
 * Path: [`test/incremental_objectid/`](./test/incremental_objectid)
 
@@ -174,7 +175,7 @@ they have already existed.
 * Backup all documents with `_id ≥ ObjectId(555317f7d290053143db668b)`, 97/101
   documents.
 
-### 03 - Backup all data in the last 7 days
+### Backup all data in the last 7 days
 
 * Path: [`test/last7_days/`](./test/last7_days)
 
