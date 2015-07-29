@@ -135,7 +135,7 @@ If `method` of `test_random` in config file is `object_id`, Mongob would
 backup all documents whose `_id` are greater than `555317f7d290053143db668b`.
 Otherwise, this file has no effect on the backup process.
 
-## Development guide
+## Development notes
 
 ### Tasks
 
@@ -194,6 +194,8 @@ they have already existed.
   documents.
 
 ### Backup all data in the last 7 days
+
+**TODO**
 
 * Path: [`test/last7_days/`](./test/last7_days)
 
