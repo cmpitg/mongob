@@ -176,3 +176,12 @@ def insert_docs(coll, docs):
     Inserts all docs into a MongoDB collection.
     """
     return coll.insert_many(docs, ordered=False)
+
+
+##############################################################################
+
+def remove_docs(coll, condition):
+    """
+    Removes all docs from a collection that satisfy a condition.
+    """
+    return coll.delete_many(condition)
