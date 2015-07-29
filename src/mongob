@@ -287,6 +287,11 @@ def backup_collection(coll_src,
 
         try:
             backend.insert_docs(coll_dest, current_docs)
+
+            if remove_after_backup:
+                logger.info('removing %s docs from source collection', len(current_docs))
+                last_id = current_docs[-1]['_id']
+                backend.remove_docs(coll_src, { '_id': { '$lte': last_id } })
         except Exception as e:
             pass
 
