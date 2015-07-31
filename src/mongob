@@ -384,7 +384,7 @@ def main():
     set_global_params(read_cmd_args())
 
     config               = read_config()
-    CONNECTIONS, db_src  = get_db(config['db_source'], CONNECTIONS)
+    CONNECTIONS, db_src  = get_db(config['db_source'],      CONNECTIONS)
     CONNECTIONS, db_dest = get_db(config['db_destination'], CONNECTIONS)
     colls                = config['collections']
 
