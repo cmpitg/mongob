@@ -169,13 +169,15 @@ def insert_docs(path, docs):
         with bz2.open(path, 'wt') as output:
             output.write(json_dumps(current_docs))
 
+    return [doc['_id'] for doc in current_docs]
+
 
 @dispatch(Collection, list)
 def insert_docs(coll, docs):
     """
     Inserts all docs into a MongoDB collection.
     """
-    return coll.insert_many(docs, ordered=False)
+    return coll.insert_many(docs, ordered=False).inserted_ids
 
 
 ##############################################################################
