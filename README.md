@@ -1,4 +1,4 @@
-# Mongob - collection-based backup tool for MongoDB
+# Mongob - collection-to-collection backup tool for MongoDB
 
 ## Features
 
