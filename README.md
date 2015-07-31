@@ -4,6 +4,8 @@
 
 * Adjustable backup rate.
 
+* Supports MongoDB instance or Bz2-compressed file as backup destination.
+
 * Config file takes effect immediately.
 
 * Incremental backup via:
@@ -88,7 +90,9 @@ collections:
 
 * `db_destination`: Either a MongoDB URI connection string of the destination
   database (`mongodb://`) or path to the backup file (`file://` or no
-  protocol).  In the latter case, the backup is a Gzip-ed JSON file.
+  protocol).  In the latter case, the backup is a Bz2-compressed JSON file.
+  Currently it is **not** recommended to use Bz2-compressed file as backup
+  destination as it might be really slow.
 
 * `collections`: an associative array with collection names as keys and backup
   methods as values.  Currently, this program supports 2 incremental backup
