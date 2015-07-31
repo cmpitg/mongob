@@ -136,6 +136,10 @@ Otherwise, this file has no effect on the backup process.
 
 ## Development notes
 
+Should you find any problems or have suggestion, please don't hesitate to
+contact me via
+[Github issue tracker](https://github.com/cmpitg/mongob/issues).
+
 ### Tasks
 
 ```sh
