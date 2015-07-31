@@ -143,6 +143,14 @@ contact me via
 ### Tasks
 
 ```sh
+# List all tasks
+invoke -l
+# or
+invoke --list
+
+# List all test names
+invoke list_test
+
 # Run test X
 invoke test --name=X
 
