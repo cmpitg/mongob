@@ -173,40 +173,40 @@ they have already existed.
 
 ### Fresh run
 
-* Path: [`test/fresh/`](./test/fresh)
+* Path: [`tests/fresh/`](./tests/fresh)
 
-* Data set: [`test/fresh/data.json`](./test/fresh/data.json)
+* Data set: [`tests/fresh/data.json`](./tests/fresh/data.json)
 
 * Full collection backup, 101 documents.
 
 ### Fresh run Bz2
 
-* Path: [`test/fresh_bz2/`](./test/fresh_bz2)
+* Path: [`tests/fresh_bz2/`](./tests/fresh_bz2)
 
-* Data set: [`test/fresh_bz2/data.json`](./test/fresh_bz2/data.json)
+* Data set: [`tests/fresh_bz2/data.json`](./tests/fresh_bz2/data.json)
 
 * Full collection backup, 101 documents, Bz2-compressed file as backup
   destination.
 
 ### Fresh run with `remove_after_backup`
 
-* Path: [`test/fresh_remove_after_backup/`](./test/fresh_remove_after_backup)
+* Path: [`tests/fresh_remove_after_backup/`](./tests/fresh_remove_after_backup)
 
 * Data set:
-  [`test/fresh_remove_after_backup/data.json`](./test/fresh_remove_after_backup/data.json)
+  [`tests/fresh_remove_after_backup/data.json`](./tests/fresh_remove_after_backup/data.json)
 
 * Full collection backup, 101 documents, documents are removed after backup
   completes.
 
 ### Incremental backup using `ObjectId`
 
-* Path: [`test/incremental_objectid/`](./test/incremental_objectid)
+* Path: [`tests/incremental_objectid/`](./tests/incremental_objectid)
 
 * Data:
-  [`test/incremental_objectid/data.json`](./test/incremental_objectid/data.json)
+  [`tests/incremental_objectid/data.json`](./tests/incremental_objectid/data.json)
 
 * Progress file:
-  [`test/incremental_objectid/progress.json`](./test/incremental_objectid/progress.json)
+  [`tests/incremental_objectid/progress.json`](./tests/incremental_objectid/progress.json)
 
 * Backup all documents with `_id ≥ ObjectId(555317f7d290053143db668b)`, 97/101
   documents.
@@ -215,10 +215,10 @@ they have already existed.
 
 **TODO**
 
-* Path: [`test/last7_days/`](./test/last7_days)
+* Path: [`tests/last7_days/`](./tests/last7_days)
 
 * Data set:
-  [`test/last7_days/data.json`](./test/last7_days/data.json)
+  [`tests/last7_days/data.json`](./tests/last7_days/data.json)
 
 * Generates `test_random` with 500 documents and `date` field spreading across
   last 10 days (50 documents/day).  Then performs backup 350 documents in the
