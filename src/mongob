@@ -286,12 +286,26 @@ def backup_collection(coll_src,
         )
 
         try:
-            backend.insert_docs(coll_dest, current_docs)
+            ids = backend.insert_docs(coll_dest, current_docs)
 
             if remove_after_backup:
-                logger.info('removing %s docs from source collection', len(current_docs))
-                last_id = current_docs[-1]['_id']
-                backend.remove_docs(coll_src, { '_id': { '$lte': last_id } })
+                logger.info(
+                    'removing %s docs from source collection',
+                    len(current_docs)
+                )
+
+                # Optimization: in case of incremental backup with ObjectId,
+                # remove docs with ≤ ObjectId filter, otherwise, loop to
+                # remove all
+                if condition['method'] == 'object_id':
+                    last_id = current_docs[-1]['_id']
+                    backend.remove_docs(
+                        coll_src,
+                        { '_id': { '$lte': last_id } }
+                    )
+                else:
+                    for doc_id in ids:
+                        backup.remove_docs(coll_src, { '_id': doc_id })
         except Exception as e:
             pass
 
