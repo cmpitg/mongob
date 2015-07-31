@@ -12,6 +12,9 @@
 
 * Gracefully stop and resume via config file.
 
+Mongob is currently used in production by [Eway](http://eway.vn/)'s
+[AdFlex](http://adflex.vn/) as a regular MongoDB backup tool.
+
 ## Requirements
 
 * Python 3
