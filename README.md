@@ -23,7 +23,7 @@
 
 It is recommended to use [virtualenv](https://virtualenv.pypa.io/en/latest/)
 with [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/)
-in both development and deployment environment.
+in both development and deployment environments.
 
 To install all dependencies:
 
@@ -50,11 +50,10 @@ mongob --config <path-to-config.yaml> \
     --log <path-to-log>
 ```
 
-Changes to config file take effect immediately after the currently performing
-operation.
+Changes to config file take effect immediately after current operation.
 
-After each backup operation, the program records the last document backed-up
-into progress file.
+After each backup operation, Mongob records the last backed-up document into
+progress file.
 
 ### Config file
 
