@@ -134,8 +134,9 @@ def dest_size(coll):
 @dispatch(str, list)
 def insert_docs(path, docs):
     """
-    Inserts all docs into a destination file.  This function makes no attempt
-    at making sure there are no duplicated docs.
+    Inserts all docs into a destination file and returns IDs of the inserted
+    docs.  This function makes no attempt at making sure there is no
+    duplication.
     """
     # Not used:
     # As we write one list each time we open destination while the desire output
@@ -175,7 +176,8 @@ def insert_docs(path, docs):
 @dispatch(Collection, list)
 def insert_docs(coll, docs):
     """
-    Inserts all docs into a MongoDB collection.
+    Inserts all docs into a MongoDB collection and returns IDs of the inserted
+    docs.
     """
     return coll.insert_many(docs, ordered=False).inserted_ids
 
